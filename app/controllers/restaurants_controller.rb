@@ -4,46 +4,25 @@ class RestaurantsController < ApplicationController
   # GET /restaurants
   # GET /restaurants.xml
   def index
-    require 'date'
-    #@restaurants = Restaurant.includes(:votes).all(:conditions => { :created_at => Date.today })
-    #@restaurants = Restaurant.find(:all, :include => [:votes], :conditions => { :created_at => Date.today })
     @restaurants = Restaurant.find(:all, :include => [:votes])
+    @winners = Restaurant.find_by_sql("SELECT r.*, COUNT(v.id) as number FROM restaurants r LEFT JOIN votes v ON r.id = v.votable_id WHERE v.vote_flag = true GROUP BY r.id ORDER BY number DESC LIMIT 3")
+    @losers = Restaurant.find_by_sql("SELECT r.*, COUNT(v.id) as number FROM restaurants r LEFT JOIN votes v ON r.id = v.votable_id WHERE v.vote_flag = false GROUP BY r.id ORDER BY number DESC LIMIT 3")
     respond_with(@restaurants)
   end
 
   def upvote
-    require 'date'
     @restaurant = Restaurant.find(params[:id])
-
-    conditions = {:created_at => Date.today}
-    hasvoted = current_user.find_votes conditions
-
-    if current_user.voted_for? @restaurant
-      if hasvoted.blank?
-        current_user.vote_up_for @restaurant
-        #@message = "Votre vote a bien été pris en compte. Merci d'avoir voté :)."
-        @message = @restaurant.find_votes conditions
-        @message = @message[0].created_at
-      else
-        @message = "Vous avez déjà voté aujourd'hui! Repassez demain ;)."
-      end
-    else
-      current_user.vote_up_for @restaurant
-      @message = "Votre vote a bien été pris en compte. Merci d'avoir voté :)."
-    end
-
-    
+    vote 'like', params[:id]
+    redirect_to restaurants_path
   end
 
   def downvote
     @restaurant = Restaurant.find(params[:id])
-    if !current_user.voted_for? @restaurant
-      @restaurant.downvote_from current_user
-      @message = "Votre vote a bien été pris en compte. Merci d'avoir voté :)."
-    else
-      @message = "Vous avez déjà voté aujourd'hui! Repassez demain ;)."
-    end
+    vote 'bad', params[:id]
+    redirect_to restaurants_path
   end
+
+
 
   # GET /restaurants/1
   # GET /restaurants/1.xml
@@ -87,4 +66,22 @@ class RestaurantsController < ApplicationController
     @restaurant.destroy
     respond_with(@restaurant)
   end
+
+  private
+    def todays_votes(id)
+      conditions = {:updated_at => Time.now.midnight..(Time.now.midnight + 1.day), :votable_id => id}
+      return current_user.find_votes conditions
+    end
+
+    def vote(type, id)
+      has_voted = todays_votes(id)
+  
+      if has_voted.empty?
+        @restaurant.vote :voter => current_user, :vote => type
+        flash[:notice] = "Votre vote a bien été pris en compte. Merci d'avoir voté :)."
+      else
+        flash[:error] = "Vous avez déjà voté pour/contre ce restaurant aujourd'hui! Repassez demain ;)."
+      end
+    end
+
 end

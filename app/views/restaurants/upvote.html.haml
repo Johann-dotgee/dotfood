@@ -1,3 +1,9 @@
-%h1 Opération effectuée
-.hero-unit
-	%p=@message.inspect
+.page-header
+  %h1 Opération effectuée
+
+-if flash[:notice]
+  .alert.alert-success
+    = flash[:notice]
+-if flash[:error]
+  .alert.alert-error
+    = flash[:error]

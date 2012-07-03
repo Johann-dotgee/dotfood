@@ -8,7 +8,6 @@
     / Le HTML5 shim, for IE6-8 support of HTML elements
     /[if lt IE 9]
       = javascript_include_tag "http://html5shim.googlecode.com/svn/trunk/html5.js"
-      = javascript_include_tag "restaurants.js"
     = stylesheet_link_tag "application", :media => "all"
     %link(href="images/favicon.ico" rel="shortcut icon")
     %link(href="images/apple-touch-icon.png" rel="apple-touch-icon")
@@ -23,7 +22,7 @@
             %span.icon-bar
             %span.icon-bar
             %span.icon-bar
-          %a.brand(href="#") Dotfood
+          %a.brand(href="/restaurants") Dotfood
           .container.nav-collapse
             %ul.nav
               %li= link_to "Restaurants", restaurants_path
@@ -39,14 +38,6 @@
         .row
           .span9
             = yield
-          .span3
-            .well.sidebar-nav
-              %h3 Sidebar
-              %ul.nav.nav-list
-                %li.nav-header Sidebar
-                %li= link_to "Link 1", "/path1"
-                %li= link_to "Link 2", "/path2"
-                %li= link_to "Link 3", "/path3"
     
       %footer
         %p &copy; Dotgee 2012
@@ -55,3 +46,4 @@
       \==================================================
     / Placed at the end of the document so the pages load faster
     = javascript_include_tag "application"
+    = javascript_include_tag "restaurants.js"

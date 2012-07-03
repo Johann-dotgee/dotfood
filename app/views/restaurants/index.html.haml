@@ -1,15 +1,21 @@
--require 'date'
 %h1 Listing restaurants
+
+-if flash[:notice]
+  .alert.alert-success
+    = flash[:notice]
+-if flash[:error]
+  .alert.alert-error
+    = flash[:error]
 
 %table.table.table-striped
   %tr
     %th #Name
     %th #Voter
-    %th #Votes
-    %th #Actions
-  - i = 0
+    %th #Votes positifs
+    %th #Votes négatifs
+    %th #Total votes
+    //%th #Actions
   - @restaurants.each do |restaurant|
-    - i++
 
     %tr
       %td= restaurant.name
@@ -28,8 +34,15 @@
                 %i.icon-minus
                 Négatif
       %td
-        -user = restaurant.votes.map { |vote| vote.voter.email if vote.created_at == Date.today }.compact.join(', ')
-        %span.badge.badge-success{:rel => "popover", "data-content" => "#{user}", "data-original-title" => "Votants"}=restaurant.votes.count(:all, :conditions => { :created_at => Date.today })
+        -user = restaurant.votes.map { |vote| vote.voter.email if (vote.updated_at == Date.today && vote.vote_flag == true) }.compact.join(', ')
+        %span.badge.badge-success{:rel => "popover", "data-content" => "#{user}", "data-original-title" => "Votants"}=restaurant.votes.count(:all, :conditions => {:updated_at => Time.now.midnight..(Time.now.midnight + 1.day), :vote_flag => true})
+      %td
+        -user = restaurant.votes.map { |vote| vote.voter.email if (vote.updated_at == Date.today && vote.vote_flag == false) }.compact.join(', ')
+        %span.badge.badge-important{:rel => "popover", "data-content" => "#{user}", "data-original-title" => "Votants"}=restaurant.votes.count(:all, :conditions => {:updated_at => Time.now.midnight..(Time.now.midnight + 1.day), :vote_flag => false})
+      %td
+        -user = restaurant.votes.map { |vote| vote.voter.email if vote.updated_at == Date.today }.compact.join(', ')
+        %span.badge.badge-info{:rel => "popover", "data-content" => "#{user}", "data-original-title" => "Votants"}=restaurant.votes.count(:all, :conditions => {:updated_at => Time.now.midnight..(Time.now.midnight + 1.day)})
+    /
       %td
         .btn-group
           %button.btn.btn-primary Action
@@ -39,6 +52,31 @@
             %li= link_to 'Show', restaurant
             %li= link_to 'Edit', edit_restaurant_path(restaurant)
             %li= link_to 'Destroy', restaurant, :confirm => 'Are you sure?', :method => :delete
+%br
+%br
+
+
+%table.table.table-striped
+  %tr
+    %th #Restaurants gagnants
+    %th #Total votes
+  - @winners.each do |winner|
+    %tr
+      %td=winner.name
+      %td
+        %span.badge.badge-success=winner.number
+
+%table.table.table-striped
+  %tr
+    %th #Restaurants perdants
+    %th #Total votes
+  - @losers.each do |loser|
+    %tr
+      %td=loser.name
+      %td
+        %span.badge.badge-important=loser.number
+
+
 
 %br
 
