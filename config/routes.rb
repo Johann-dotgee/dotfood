@@ -1,4 +1,21 @@
 Dotfood::Application.routes.draw do
+
+  resources :votes
+
+  devise_for :users
+
+  resources :users
+
+  resources :votes 
+
+  resources :restaurants do
+    member do
+      get 'upvote'
+      get 'downvote'
+    end
+  end
+  
+  root :to => "restaurants#index"
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

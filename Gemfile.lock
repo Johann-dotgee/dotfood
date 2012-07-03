@@ -28,6 +28,8 @@ GEM
     activesupport (3.2.6)
       i18n (~> 0.6)
       multi_json (~> 1.0)
+    acts_as_votable (0.3.1)
+      rails (>= 3.0.0)
     arel (3.0.2)
     bcrypt-ruby (3.0.1)
     builder (3.0.0)
@@ -62,6 +64,10 @@ GEM
     json (1.7.3)
     less (2.2.1)
       commonjs (~> 0.2.6)
+    less-rails (2.2.3)
+      actionpack (>= 3.1)
+      less (~> 2.2.0)
+    libv8 (3.3.10.4)
     mail (2.4.4)
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
@@ -96,20 +102,32 @@ GEM
     rake (0.9.2.2)
     rdoc (3.12)
       json (~> 1.4)
+    responders (0.9.1)
+      railties (~> 3.1)
     sass (3.1.19)
     sass-rails (3.2.5)
       railties (~> 3.2.0)
       sass (>= 3.1.10)
       tilt (~> 1.3)
+    simple_form (2.0.2)
+      actionpack (~> 3.0)
+      activemodel (~> 3.0)
     sprockets (2.1.3)
       hike (~> 1.2)
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
+    therubyracer (0.10.1)
+      libv8 (~> 3.3.10)
     thor (0.15.3)
     tilt (1.3.3)
     treetop (1.4.10)
       polyglot
       polyglot (>= 0.3.1)
+    twitter-bootstrap-rails (2.1.0)
+      actionpack (>= 3.1)
+      less-rails (~> 2.2.2)
+      railties (>= 3.1)
+      therubyracer (~> 0.10.1)
     tzinfo (0.3.33)
     uglifier (1.2.5)
       execjs (>= 0.3.0)
@@ -121,6 +139,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  acts_as_votable
   coffee-rails (~> 3.2.1)
   devise
   haml (>= 3.0.0)
@@ -129,5 +148,8 @@ DEPENDENCIES
   less
   pg
   rails (= 3.2.6)
+  responders
   sass-rails (~> 3.2.3)
+  simple_form
+  twitter-bootstrap-rails
   uglifier (>= 1.0.3)

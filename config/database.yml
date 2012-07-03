@@ -14,11 +14,12 @@
 #
 development:
   adapter: postgresql
+  host: localhost
   encoding: unicode
-  database: dotfood_development
+  database: dotfood
   pool: 5
-  username: dotfood
-  password:
+  username: postgres
+  password: bobleponge
 
   # Connect on a TCP socket. Omitted by default since the client uses a
   # domain socket that doesn't need configuration. Windows does not have

@@ -1,0 +1,30 @@
+%p#notice= notice
+
+%p
+  %b Id:
+  = @vote.id
+%p
+  %b Votable:
+  = @vote.votable_id
+%p
+  %b Votable type:
+  = @vote.votable_type
+%p
+  %b Voter:
+  = @vote.voter_id
+%p
+  %b Voter type:
+  = @vote.voter_type
+%p
+  %b Vote flag:
+  = @vote.vote_flag
+%p
+  %b Created at:
+  = @vote.created_at
+%p
+  %b Updated at:
+  = @vote.updated_at
+
+= link_to 'Edit', edit_vote_path(@vote)
+\|
+= link_to 'Back', votes_path

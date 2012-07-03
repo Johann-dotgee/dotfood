@@ -1,0 +1,46 @@
+-require 'date'
+%h1 Listing restaurants
+
+%table.table.table-striped
+  %tr
+    %th #Name
+    %th #Voter
+    %th #Votes
+    %th #Actions
+  - i = 0
+  - @restaurants.each do |restaurant|
+    - i++
+
+    %tr
+      %td= restaurant.name
+      %td
+        .btn-group
+          %button.btn.btn-primary Vote
+          %button.btn.btn-primary.dropdown-toggle(data-toggle="dropdown")
+            %span.caret
+          %ul.dropdown-menu
+            %li
+              = link_to upvote_restaurant_path(restaurant) do
+                %i.icon-plus
+                Positif
+            %li
+              = link_to downvote_restaurant_path(restaurant) do
+                %i.icon-minus
+                Négatif
+      %td
+        -user = restaurant.votes.map { |vote| vote.voter.email if vote.created_at == Date.today }.compact.join(', ')
+        %span.badge.badge-success{:rel => "popover", "data-content" => "#{user}", "data-original-title" => "Votants"}=restaurant.votes.count(:all, :conditions => { :created_at => Date.today })
+      %td
+        .btn-group
+          %button.btn.btn-primary Action
+          %button.btn.btn-primary.dropdown-toggle(data-toggle="dropdown")
+            %span.caret
+          %ul.dropdown-menu
+            %li= link_to 'Show', restaurant
+            %li= link_to 'Edit', edit_restaurant_path(restaurant)
+            %li= link_to 'Destroy', restaurant, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Restaurant', new_restaurant_path
+

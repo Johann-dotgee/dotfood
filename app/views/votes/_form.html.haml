@@ -1,0 +1,15 @@
+= simple_form_for(@vote) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :id
+    = f.input :votable_id
+    = f.input :votable_type
+    = f.input :voter_id
+    = f.input :voter_type
+    = f.input :vote_flag
+    = f.input :created_at
+    = f.input :updated_at
+
+  .form-actions
+    = f.button :submit
