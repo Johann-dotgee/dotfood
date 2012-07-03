@@ -1,5 +1,6 @@
 #encoding:utf-8
 class RestaurantsController < ApplicationController
+  before_filter :authenticate_user!
   # GET /restaurants
   # GET /restaurants.xml
   def index
@@ -20,6 +21,8 @@ class RestaurantsController < ApplicationController
     vote 'bad', params[:id]
     redirect_to restaurants_path
   end
+
+
 
   # GET /restaurants/1
   # GET /restaurants/1.xml
@@ -79,6 +82,6 @@ class RestaurantsController < ApplicationController
       else
         flash[:error] = "Vous avez déjà voté pour/contre ce restaurant aujourd'hui! Repassez demain ;)."
       end
-
     end
+
 end

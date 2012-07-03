@@ -1,5 +1,7 @@
 Dotfood::Application.routes.draw do
 
+  resources :restaurants
+
   resources :votes
 
   devise_for :users

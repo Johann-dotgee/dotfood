@@ -1,41 +1,5 @@
 %h1 Listing restaurants
 
-%table
-  %tr
-    %th Name
-    %th Budget
-    %th Quality
-    %th Quantity
-    %th Time to go
-    %th Lundi
-    %th Mardi
-    %th Mercredi
-    %th Jeudi
-    %th Vendredi
-    %th
-    %th
-    %th
-
-  - @restaurants.each do |restaurant|
-    %tr
-      %td= restaurant.name
-      %td= restaurant.budget
-      %td= restaurant.quality
-      %td= restaurant.quantity
-      %td= restaurant.time_to_go
-      %td= restaurant.lundi
-      %td= restaurant.mardi
-      %td= restaurant.mercredi
-      %td= restaurant.jeudi
-      %td= restaurant.vendredi
-      %td= link_to 'Show', restaurant
-      %td= link_to 'Edit', edit_restaurant_path(restaurant)
-      %td= link_to 'Destroy', restaurant, :confirm => 'Are you sure?', :method => :delete
-
-%br
-
-%h1 Listing restaurants
-
 -if flash[:notice]
   .alert.alert-success
     = flash[:notice]
@@ -117,5 +81,4 @@
 %br
 
 = link_to 'New Restaurant', new_restaurant_path, :class => "btn btn-inverse", :style => "color:white!important;"
-
 

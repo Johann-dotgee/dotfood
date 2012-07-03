@@ -43,14 +43,16 @@ test:
   adapter: postgresql
   encoding: unicode
   database: dotfood_test
+  host: localhost
   pool: 5
-  username: dotfood
-  password:
+  username: postgres
+  password: bobleponge
 
 production:
   adapter: postgresql
+  host: localhost
   encoding: unicode
   database: dotfood_production
   pool: 5
-  username: dotfood
-  password:
+  username: postgres
+  password: bobleponge
