@@ -19,13 +19,13 @@ class RestaurantsController < ApplicationController
   def upvote
     @restaurant = Restaurant.find(params[:id])
     vote 'like', params[:id]
-    redirect_to restaurants_path
+    redirect_to dashboard_restaurants_path
   end
 
   def downvote
     @restaurant = Restaurant.find(params[:id])
     vote 'bad', params[:id]
-    redirect_to restaurants_path
+    redirect_to dashboard_restaurants_path
   end
 
   # GET /restaurants/1
