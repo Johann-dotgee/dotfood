@@ -12,7 +12,7 @@ class CreateRestaurants < ActiveRecord::Migration
       t.boolean :jeudi
       t.boolean :vendredi
 
-      t.timestamps
+      t.date
     end
   end
 end

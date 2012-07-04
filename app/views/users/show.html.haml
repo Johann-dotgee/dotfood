@@ -1,0 +1,19 @@
+%h2= @user.first_name
+%br
+.row
+  .span1
+    %p Prénom:
+  .span3
+    %p=@user.first_name
+
+.row
+  .span1
+    %p Email:
+  .span3
+    %p=@user.email
+
+.row
+  .span1
+    %p Rôle(s):
+  .span3
+    %p=@user.roles_name.compact.join(', ')

@@ -1,0 +1,22 @@
+%h1 Listing Users
+
+%table.table.table-stripped
+  %tr
+    %th #Prénom
+    %th #Rôle
+    %th #Actions
+  -@users.each do |user|
+    %tr
+      %td=user.first_name
+      %td=user.roles_name.compact.join(', ')
+      %td
+        .btn-group
+          %button.btn.btn-primary Action
+          %button.btn.btn-primary.dropdown-toggle(data-toggle="dropdown")
+            %span.caret
+          %ul.dropdown-menu
+            %li= link_to 'Show', user
+            %li= link_to 'Edit', edit_user_path(user)
+            %li= link_to 'Passer admin', add_role_user_path(user)
+            %li= link_to "Retirer des admins", change_role_user_path(user)
+            %li= link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete

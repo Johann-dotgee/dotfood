@@ -1,36 +1,87 @@
 %p#notice= notice
 
-%p
-  %b Name:
-  = @restaurant.name
-%p
-  %b Budget:
-  = @restaurant.budget
-%p
-  %b Quality:
-  = @restaurant.quality
-%p
-  %b Quantity:
-  = @restaurant.quantity
-%p
-  %b Time to go:
-  = @restaurant.time_to_go
-%p
-  %b Lundi:
-  = @restaurant.lundi
-%p
-  %b Mardi:
-  = @restaurant.mardi
-%p
-  %b Mercredi:
-  = @restaurant.mercredi
-%p
-  %b Jeudi:
-  = @restaurant.jeudi
-%p
-  %b Vendredi:
-  = @restaurant.vendredi
+%h2= @restaurant.name
 
-= link_to 'Edit', edit_restaurant_path(@restaurant)
-\|
-= link_to 'Back', restaurants_path
+%br
+.row
+  %p.span2
+    %b Budget moyen estimé:
+    .span3
+      -if @restaurant.budget == 1
+        =image_tag '/assets/1euro.jpeg', :height => "30px", :width => "30px"
+
+      -if @restaurant.budget == 2
+        =image_tag '/assets/2euro.jpeg', :height => "30px", :width => "30px"
+
+
+      -if @restaurant.budget > 2 && @restaurant.budget%2 == 0
+        -for @restaurant.budget in 1..@restaurant.budget/2-1
+          =image_tag '/assets/2euro.jpeg', :height => "30px", :width => "30px"
+          + 
+        =image_tag '/assets/2euro.jpeg', :height => "30px", :width => "30px"
+
+
+      -if @restaurant.budget > 2 && @restaurant.budget%2 != 0
+        -for @restaurant.budget in 1..@restaurant.budget/2
+          =image_tag '/assets/2euro.jpeg', :height => "30px", :width => "30px"
+          + 
+        =image_tag '/assets/1euro.jpeg', :height => "30px", :width => "30px"
+        
+
+.row  
+  %p.span1
+    %b Qualité:
+    .span3
+      -for i in 1..@restaurant.quality do
+        =image_tag '/assets/mark1.png', :height => "20px", :width => "20px"
+
+      -for i in @restaurant.quality+1..10 do
+        =image_tag '/assets/mark2.png', :height => "20px", :width => "20px"
+
+.row
+  %p.span1
+    %b Quantité:
+    .span3
+      -for i in 1..@restaurant.quantity do
+        =image_tag '/assets/mark1.png', :height => "20px", :width => "20px"
+
+      -for i in @restaurant.quantity+1..10 do
+        =image_tag '/assets/mark2.png', :height => "20px", :width => "20px"
+
+
+%p
+  %b Temps de marche estimé:
+  #{@restaurant.time_to_go} minutes
+%br
+
+%h3 Dates d'ouvertures
+
+%table.table.table-striped
+  %tr
+    %th #Lundi
+    %th #Mardi
+    %th #Mercredi
+    %th #Jeudi
+    %th #Vendredi
+  %tr
+    %td= if(@restaurant.lundi) then "Ouvert" else "Fermé" end
+    %td= if(@restaurant.mardi) then "Ouvert" else "Fermé" end
+    %td= if(@restaurant.mercredi) then "Ouvert" else "Fermé" end
+    %td= if(@restaurant.jeudi) then "Ouvert" else "Fermé" end
+    %td= if(@restaurant.vendredi) then "Ouvert" else "Fermé" end
+
+
+
+.btn.btn-inverse
+  = link_to restaurants_path, :style => "color:white!important;" do
+    %i.icon-arrow-left.icon-white
+    Back
+.btn.btn-inverse
+  = link_to edit_restaurant_path(@restaurant), :style => "color:white!important;" do
+    %i.icon-pencil.icon-white
+    Edit
+
+
+
+
+

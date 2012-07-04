@@ -1,0 +1,15 @@
+%h2 Editer #{@user.first_name}
+
+%form.form.form-horizontal
+  .control-group
+    %label{:class => "control-label", :for => "first_name"} Prénom
+    .controls
+      %input{:type => "text", :class => "input-medium", :id => "first_name", :value => @user.first_name}
+
+  .control-group
+    %label{:class => "control-label", :for => "first_name"} Email
+    .controls
+      %input{:type => "text", :class => "input-medium", :id => "first_name", :value => @user.email}
+
+  .form-actions
+    %button{:type => "submit", :class => "btn btn-primary"} Enregistrer

@@ -1,8 +1,15 @@
 #encoding:utf-8
 class RestaurantsController < ApplicationController
+  before_filter :authenticate_user!
+
+  def index
+    @restaurants = Restaurant.find(:all)
+    respond_with(@restaurants)
+  end
+
   # GET /restaurants
   # GET /restaurants.xml
-  def index
+  def dashboard
     @restaurants = Restaurant.find(:all, :include => [:votes])
     @winners = Restaurant.find_by_sql("SELECT r.*, COUNT(v.id) as number FROM restaurants r LEFT JOIN votes v ON r.id = v.votable_id WHERE v.vote_flag = true GROUP BY r.id ORDER BY number DESC LIMIT 3")
     @losers = Restaurant.find_by_sql("SELECT r.*, COUNT(v.id) as number FROM restaurants r LEFT JOIN votes v ON r.id = v.votable_id WHERE v.vote_flag = false GROUP BY r.id ORDER BY number DESC LIMIT 3")
@@ -28,6 +35,7 @@ class RestaurantsController < ApplicationController
     respond_with(@restaurant)
   end
 
+
   # GET /restaurants/new
   # GET /restaurants/new.xml
   def new
@@ -37,7 +45,12 @@ class RestaurantsController < ApplicationController
 
   # GET /restaurants/1/edit
   def edit
-    @restaurant = Restaurant.find(params[:id])
+    if current_user.has_role? :admin
+      @restaurant = Restaurant.find(params[:id])
+    else
+      flash[:error] = "Vous n'avez pas les droits nécessaires pour accéder à cette page"
+      redirect_to dashboard_restaurants_path
+    end
   end
 
   # POST /restaurants
@@ -51,17 +64,27 @@ class RestaurantsController < ApplicationController
   # PUT /restaurants/1
   # PUT /restaurants/1.xml
   def update
-    @restaurant = Restaurant.find(params[:id])
-    @restaurant.update_attributes(params[:restaurant])
-    respond_with(@restaurant)
+    if current_user.has_role? :admin
+      @restaurant = Restaurant.find(params[:id])
+      @restaurant.update_attributes(params[:restaurant])
+      respond_with(@restaurant)
+    else
+      flash[:error] = "Vous n'avez pas les droits nécessaires pour accéder à cette page"
+      redirect_to dashboard_restaurants_path
+    end
   end
 
   # DELETE /restaurants/1
   # DELETE /restaurants/1.xml
   def destroy
-    @restaurant = Restaurant.find(params[:id])
-    @restaurant.destroy
-    respond_with(@restaurant)
+    if current_user.has_role? :admin
+      @restaurant = Restaurant.find(params[:id])
+      @restaurant.destroy
+      respond_with(@restaurant)
+    else
+      flash[:error] = "Vous n'avez pas les droits nécessaires pour accéder à cette page"
+      redirect_to dashboard_restaurants_path
+    end
   end
 
   private

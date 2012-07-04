@@ -26,17 +26,25 @@
           .container.nav-collapse
             %ul.nav
               %li= link_to "Restaurants", restaurants_path
+              -if (user_signed_in? && (current_user.has_role? :admin))
+                %li= link_to "Users", users_path
             %ul.nav.pull-right
               -if user_signed_in?
                 %li
-                  %a= current_user.email
+                  %a= current_user.first_name
                 %li= link_to "Sign out", destroy_user_session_path, :method => :delete
 
     .container
+      -if flash[:notice]
+        .alert.alert-success
+          = flash[:notice]
+      -if flash[:error]
+        .alert.alert-error
+          = flash[:error]
 
       .content
         .row
-          .span9
+          .span12
             = yield
       %br
       %br
