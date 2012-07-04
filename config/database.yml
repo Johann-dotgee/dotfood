@@ -49,10 +49,10 @@ test:
   password: bobleponge
 
 production:
-  adapter: postgresql
+  adapter: mysql2
   host: localhost
-  encoding: unicode
+  encoding: utf8
   database: dotfood_production
   pool: 5
-  username: postgres
-  password: bobleponge
+  username: dotfood
+  password: dot@food35
