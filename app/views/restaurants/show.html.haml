@@ -1,7 +1,6 @@
 %p#notice= notice
 
 %h2= @restaurant.name
-
 %br
 .row
   %p.span2
@@ -48,10 +47,14 @@
       -for i in @restaurant.quantity+1..10 do
         =image_tag '/assets/mark2.png', :height => "20px", :width => "20px"
 
+%p
+  %b Distance à vol d'oiseau:
+  #{(@distance*1000).round} mètres
 
 %p
   %b Temps de marche estimé:
   #{@restaurant.time_to_go} minutes
+
 %br
 
 %h3 Dates d'ouvertures
