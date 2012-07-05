@@ -17,8 +17,8 @@
         %td
           .btn-group
             -if current_user.voted_for_today? restaurant
-              %button.btn.btn-primary.disabled Vote effectué
-              %button.btn.btn-primary.disabled.dropdown-toggle(data-toggle="dropdown")
+              %button.btn.btn-inverse.disabled Vote effectué
+              %button.btn.btn-inverse.disabled.dropdown-toggle(data-toggle="dropdown")
             -else
               %button.btn.btn-primary Vote
               %button.btn.btn-primary.dropdown-toggle(data-toggle="dropdown")
