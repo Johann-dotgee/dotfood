@@ -38,18 +38,22 @@
             %li= link_to 'Destroy', restaurant, :confirm => 'Are you sure?', :method => :delete
       %td
         .btn-group
-          %button.btn.btn-primary Vote
-          %button.btn.btn-primary.dropdown-toggle(data-toggle="dropdown")
-            %span.caret
-          %ul.dropdown-menu
-            %li
-              = link_to upvote_restaurant_path(restaurant) do
-                %i.icon-plus
-                Positif
-            %li
-              = link_to downvote_restaurant_path(restaurant) do
-                %i.icon-minus
-                Négatif
+          -if restaurant.voted_on_by? current_user
+            %button.btn.btn-primary.disabled Vote effectué
+            %button.btn.btn-primary.disabled.dropdown-toggle(data-toggle="dropdown")
+          -else
+            %button.btn.btn-primary Vote
+            %button.btn.btn-primary.dropdown-toggle(data-toggle="dropdown")
+              %span.caret
+            %ul.dropdown-menu
+              %li
+                = link_to upvote_restaurant_path(restaurant) do
+                  %i.icon-plus
+                  Positif
+              %li
+                = link_to downvote_restaurant_path(restaurant) do
+                  %i.icon-minus
+                  Négatif
 
 .btn.btn-inverse
   = link_to dashboard_restaurants_path, :style => "color:white!important;" do
