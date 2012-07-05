@@ -10,4 +10,18 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :first_name
   # attr_accessible :title, :body
+
+  def voted_for_today? model, cond = {}
+    vote = self.find_votes cond.merge({:votable_id => model.id})
+    # vote.last.updated_at
+    unless vote.count == 0
+      if vote.first.updated_at < Date.today
+        vote = false
+      else 
+        vote = true
+      end
+    else
+      vote = false
+    end
+  end
 end
