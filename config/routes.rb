@@ -2,10 +2,6 @@ Dotfood::Application.routes.draw do
 
   devise_for :admins
 
-  #match '/restaurants/showAll', :controller => 'restaurants', :action => 'showAll'
-
-  resources :votes
-
   devise_for :users
 
   resources :users do
@@ -16,9 +12,6 @@ Dotfood::Application.routes.draw do
   end
 
   resources :votes 
-
-  #match '/restaurants/showAll', :to => 'restaurants#showAll'
-
 
   resources :restaurants do
     member do
