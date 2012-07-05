@@ -38,7 +38,7 @@
             %li= link_to 'Destroy', restaurant, :confirm => 'Are you sure?', :method => :delete
       %td
         .btn-group
-          -if restaurant.voted_on_by? current_user
+          -if current_user.voted_for_today? restaurant
             %button.btn.btn-primary.disabled Vote effectué
             %button.btn.btn-primary.disabled.dropdown-toggle(data-toggle="dropdown")
           -else

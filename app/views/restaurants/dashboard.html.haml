@@ -16,7 +16,7 @@
         %td= restaurant.name
         %td
           .btn-group
-            -if restaurant.voted_on_by? current_user
+            -if current_user.voted_for_today? restaurant
               %button.btn.btn-primary.disabled Vote effectué
               %button.btn.btn-primary.disabled.dropdown-toggle(data-toggle="dropdown")
             -else
@@ -41,9 +41,6 @@
         %td
           -user = restaurant.votes.map { |vote| vote.voter.first_name if vote.updated_at == Date.today }.compact.join(', ')
           %span.badge.badge-info{:rel => "popover", "data-content" => "#{user}", "data-original-title" => "Votants"}=restaurant.votes.count(:all, :conditions => {:updated_at => Time.now.midnight..(Time.now.midnight + 1.day)})
-
-
-
 %br
 %br
 %br
