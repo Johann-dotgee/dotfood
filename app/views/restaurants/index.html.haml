@@ -13,6 +13,7 @@
     %th #Jeudi
     %th #Vendredi
     %th #Actions
+    %th #Voter
 
   - @restaurants.each do |restaurant|
     %tr
@@ -35,6 +36,20 @@
             %li= link_to 'Show', restaurant
             %li= link_to 'Edit', edit_restaurant_path(restaurant)
             %li= link_to 'Destroy', restaurant, :confirm => 'Are you sure?', :method => :delete
+      %td
+        .btn-group
+          %button.btn.btn-primary Vote
+          %button.btn.btn-primary.dropdown-toggle(data-toggle="dropdown")
+            %span.caret
+          %ul.dropdown-menu
+            %li
+              = link_to upvote_restaurant_path(restaurant) do
+                %i.icon-plus
+                Positif
+            %li
+              = link_to downvote_restaurant_path(restaurant) do
+                %i.icon-minus
+                Négatif
 
 .btn.btn-inverse
   = link_to dashboard_restaurants_path, :style => "color:white!important;" do

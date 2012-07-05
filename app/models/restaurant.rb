@@ -5,4 +5,8 @@ class Restaurant < ActiveRecord::Base
 
   geocoded_by :address
   after_validation :geocode
+
+  def diff 
+    self.votes.map{|vote| vote.vote_flag}.count(true) - self.votes.map{|vote| vote.vote_flag}.count(false)
+  end
 end
