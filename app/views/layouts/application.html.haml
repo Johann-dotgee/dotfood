@@ -37,7 +37,8 @@
             - icons = ["star-empty", "plus", "eye-open"]
             - texts = ["Restaurant Ranking", "Add Restaurant", "Restaurant List"]
             = li_list(links, icons, texts)
-
+            - if(user_signed_in? && (current_user.has_role? :admin))
+              = li_nav(users_path, "user", "Manage Users")
           - if user_signed_in?
             %ul.pull-right
               %li
