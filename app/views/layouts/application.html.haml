@@ -15,16 +15,72 @@
     %link(href="images/apple-touch-icon-114x114.png" rel="apple-touch-icon" sizes="114x114")
 
   %body
-    %ul.nav.nav-pills
-      %li.active= link_to "Dotfood", dashboard_restaurants_path
-      %li.active= link_to "Restaurants", restaurants_path
-      -if (user_signed_in? && (current_user.has_role? :admin))
-        %li.active= link_to "Users", users_path
-    %ul.nav.nav-pills.pull-right
-      -if user_signed_in?
-        %li.active
-          = link_to current_user.first_name+" - ( "+current_user.email+" )", user_path(current_user.id)
-        %li.active= link_to "Sign out", destroy_user_session_path, :method => :delete
+    / .navbar.navbar-fixed-top
+    /   .navbar-inner
+    /     .container
+    /       = link_to "Dotfood", dashboard_restaurants_path, :class => "brand pull-right"
+    /       %ul.nav
+    /         %li= link_to "Restaurants", restaurants_path
+    /         - if (user_signed_in? && (current_user.has_role? :admin))
+    /           %li= link_to "Users", users_path
+    /       %ul.nav.pull-right
+    /         - if user_signed_in?
+    /           %li= link_to "Sign out", destroy_user_session_path, :method => :delete
+    /         - else
+    /           %li= link_to "Sign up", new_user_registration_path
+
+    .subnavbar
+      .subnavbar-inner
+        .container
+          %ul
+            %li
+              = link_to dashboard_restaurants_path, :class => "brand" do
+                %i.icon-home
+                %span Dotfood
+            %li
+              =link_to new_restaurant_path do
+                %i.icon-plus
+                %span Add Restaurant
+            %li
+              =link_to dashboard_restaurants_path do
+                %i.icon-star-empty
+                %span Restaurant Ranking
+            %li
+              =link_to restaurants_path do
+                %i.icon-eye-open
+                %span Restaurant List
+            %li
+              =link_to users_path do
+                %i.icon-user
+                %span Manage Users
+
+          - if user_signed_in?
+            %ul.pull-right
+              %li
+                =link_to destroy_user_session_path, :method => :delete do
+                  %i.icon-off
+                  %span Sign Out
+          - else
+            %ul.pull-right
+              %li
+                =link_to destroy_user_session_path, :method => :delete do
+                  %i.icon-off
+                  %span Sign In
+              %li
+                =link_to new_user_registration_path do
+                  %i.icon-off
+                  %span Sign Up
+
+    / %ul.nav.nav-pills
+    /   %li.active= link_to "Dotfood", dashboard_restaurants_path
+    /   %li.active= link_to "Restaurants", restaurants_path
+    /   -if (user_signed_in? && (current_user.has_role? :admin))
+    /     %li.active= link_to "Users", users_path
+    / %ul.nav.nav-pills.pull-right
+    /   -if user_signed_in?
+    /     %li.active
+    /       = link_to current_user.first_name+" - ( "+current_user.email+" )", user_path(current_user.id)
+    /     %li.active= link_to "Sign out", destroy_user_session_path, :method => :delete
 
     .container
       -if flash[:notice]
@@ -38,24 +94,14 @@
         .row
           .span12
             = yield
-      %br
-      %br
-      %br
-    .hero-unit
-      %footer
-        %p &copy; Dotgee 2012
-      %ul.right
-        %li= link_to "Dotfood - Accueil", dashboard_restaurants_path
-        %li= link_to "Restaurants", restaurants_path
-        - if (user_signed_in? && (current_user.has_role? :admin))
-          %li= link_to "Users", users_path
-        - if user_signed_in?
-          %li.active= link_to "Sign out", destroy_user_session_path, :method => :delete
-        - else
-          %li.active= link_to "Sign up", new_user_registration_path
+    .navbar.navbar-fixed-bottom
+      .navbar-inner
+        .container
+          %ul.nav
+            %li=link_to "&copy; 2012 - Dotgee".html_safe, dashboard_restaurants_path, :class => "copy"
     /
       Javascripts
       \==================================================
     / Placed at the end of the document so the pages load faster
     = javascript_include_tag "application"
-    = javascript_include_tag "restaurants.js"
+    = javascript_include_tag "restaurants"

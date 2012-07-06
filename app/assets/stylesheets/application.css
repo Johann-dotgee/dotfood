@@ -9,22 +9,12 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require_self
- *= require_tree .
+ *= require global
+ *= require bootstrap_and_overrides
  */
-.nav{
-  position: absolute;
-  top: 5px;
-}
 
-.nav.pull-right{
-  right: 20px;
-}
 
-ul.right{
-  display: inline-block;
-  margin-left: 80%;
-}
 
-.hero-unit footer{
-  display: inline-block;
-}
+
+
+
