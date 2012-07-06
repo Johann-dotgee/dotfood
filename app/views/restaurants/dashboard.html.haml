@@ -11,7 +11,7 @@
 
 
   - @restaurants.each do |restaurant|
-    -if restaurant.votes.count > 0
+    -if restaurant.votes.count > 0 && restaurant.votes.last.updated_at == Date.today
       %tr
         %td= restaurant.name
         %td

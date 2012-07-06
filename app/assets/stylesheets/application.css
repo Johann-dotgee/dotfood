@@ -11,3 +11,20 @@
  *= require_self
  *= require_tree .
  */
+.nav{
+  position: absolute;
+  top: 5px;
+}
+
+.nav.pull-right{
+  right: 20px;
+}
+
+ul.right{
+  display: inline-block;
+  margin-left: 80%;
+}
+
+.hero-unit footer{
+  display: inline-block;
+}
