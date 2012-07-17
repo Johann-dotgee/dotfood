@@ -10,11 +10,18 @@ class RestaurantsController < ApplicationController
   # GET /restaurants
   # GET /restaurants.xml
   def dashboard
-    #@restaurants = Restaurant.find(:all, :include => [:votes])
-    @restaurants = Restaurant.find(:all, :include => [:votes])
+    @restaurants = Restaurant.find :all, :include => [:votes], :conditions => {"votes.created_at" => Date.today}
+    #@test = []
+    #@restaurants.each do |restaurant|
+      #@test << restaurant.diff
+    #end
+    #raise @test.inspect
     @restaurants = @restaurants.sort{|a,b| b.diff <=> a.diff}
-    # @winners = Restaurant.find_by_sql("SELECT r.*, COUNT(v.id) as number FROM restaurants r LEFT JOIN votes v ON r.id = v.votable_id WHERE v.vote_flag = true GROUP BY r.id ORDER BY number DESC")
-    # @losers = Restaurant.find_by_sql("SELECT r.*, COUNT(v.id) as number FROM restaurants r LEFT JOIN votes v ON r.id = v.votable_id WHERE v.vote_flag = false GROUP BY r.id ORDER BY number ASC")
+    #@test = {}
+    #@restaurants.each do |restaurant|
+      #@test[restaurant.name] = restaurant.diff
+    #end
+    #raise @test.inspect
     respond_with(@restaurants)
   end
 
