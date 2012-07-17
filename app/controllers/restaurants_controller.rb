@@ -98,12 +98,18 @@ class RestaurantsController < ApplicationController
 
     def vote(type, id)
       has_voted = todays_votes(id)
-  
       if has_voted.empty?
         @restaurant.vote :voter => current_user, :vote => type
         flash[:notice] = "Votre vote a bien été pris en compte. Merci d'avoir voté :)."
       else
-        flash[:error] = "Vous avez déjà voté pour/contre ce restaurant aujourd'hui! Repassez demain ;)."
+        type_flag = has_voted.first.vote_flag == true ? "like" : "bad"
+        unless type_flag == type
+          @restaurant.vote :voter => current_user, :vote => type
+          flash[:notice] = "Votre vote a bien été modifié."
+	else
+	  type_vote = type == "like" ? "pour" : "contre"
+	  flash[:error] = "Vous avez déjà voté #{type_vote} ce restaurant."
+	end
       end
 
     end
