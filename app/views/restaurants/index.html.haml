@@ -19,7 +19,7 @@
     - average = average/(restaurant.ratings.size)
     %tr
       %td= link_to restaurant.name, restaurant
-      %td #{restaurant.budget_max} €
+      %td #{restaurant.budget_min}€ - #{restaurant.budget_max}€
       %td= average
       %td
         = restaurant.intervals.where(:day => t(:"#{Time.now.strftime('%A').downcase}")).first.closed ? t(:no) : t(:yes)
