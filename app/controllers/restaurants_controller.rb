@@ -107,6 +107,7 @@ class RestaurantsController < ApplicationController
     def parse_interval
       @parameters = params[:restaurant][:intervals_attributes]
       params[:restaurant][:intervals_attributes].each do |k, par|
+        par["user_id"] = current_user.id
         if par["interval_type"].blank?
           par["closed"] = true
           # to_merge = Hash.new

@@ -57,6 +57,9 @@
           .control-group
             .control-label= note.label t(:ambience_restaurant_label)
             .controls= note.input_field :ambience, :collection => 0..10, :prompt => t(:mark_prompt)
+          .control-group
+            .control-label= note.label t(:waiting_restaurant_label)
+            .controls= note.input_field :waiting, :collection => 0..10, :prompt => t(:mark_prompt)
 
 
 
