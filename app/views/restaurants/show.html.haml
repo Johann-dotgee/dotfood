@@ -37,28 +37,27 @@
       %strong Temps de marche:
       = "#{@restaurant.time_to_go} minutes"
 
-
 .row
   .span2
     %p
       %strong Service:
-      = "#{@restaurant.ratings.first.quality_service} / 10"
+      = "#{@restaurant.ratings.where(:restaurant_id => @restaurant.id).first.quality_service} / 10"
 
   .span2
     %p
       %strong Nourriture:
-      = "#{@restaurant.ratings.first.quality_food} / 10"
+      = "#{@restaurant.ratings.where(:restaurant_id => @restaurant.id).first.quality_food} / 10"
 
 
   .span2
     %p
       %strong Ambiance:
-      = "#{@restaurant.ratings.first.ambience} / 10"
+      = "#{@restaurant.ratings.where(:restaurant_id => @restaurant.id).first.ambience} / 10"
 
   .span2
     %p
       %strong Quantité:
-      = "#{@restaurant.ratings.first.quantity} / 10"
+      = "#{@restaurant.ratings.where(:restaurant_id => @restaurant.id).first.quantity} / 10"
 
 %br
 
