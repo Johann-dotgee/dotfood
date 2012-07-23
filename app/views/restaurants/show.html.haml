@@ -59,6 +59,11 @@
       %strong Quantité:
       = "#{@restaurant.ratings.where(:restaurant_id => @restaurant.id).first.quantity} / 10"
 
+  .span2
+    %p
+      %strong Attente:
+      = "#{@restaurant.ratings.where(:restaurant_id => @restaurant.id).first.waiting} / 10"
+
 %br
 
 .row
