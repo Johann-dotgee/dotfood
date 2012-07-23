@@ -5,18 +5,16 @@
     %th #Prénom
     %th #Rôle
     %th #Actions
+    %th #Admin
+
   -@users.each do |user|
     %tr
       %td=user.first_name
       %td=user.roles_name.compact.join(', ')
       %td
-        .btn-group
-          %button.btn.btn-primary Action
-          %button.btn.btn-primary.dropdown-toggle(data-toggle="dropdown")
-            %span.caret
-          %ul.dropdown-menu
-            %li= link_to 'Show', user
-            %li= link_to 'Edit', edit_user_path(user)
-            %li= link_to 'Passer admin', add_role_user_path(user)
-            %li= link_to "Retirer des admins", change_role_user_path(user)
-            %li= link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete
+        = link_to '<i class="icon-eye-open" style="font-size: 24px;"></i>'.html_safe, user
+        = link_to '<i class="icon-pencil" style="font-size: 24px;"></i>'.html_safe, edit_user_path(user)
+        = link_to '<i class="icon-remove" style="font-size: 24px;"></i>'.html_safe, user, :confirm => 'Are you sure?', :method => :delete
+      %td
+        = link_to '<i class="icon-plus-sign" style="font-size: 24px;"></i>'.html_safe, add_role_user_path(user)
+        = link_to '<i class="icon-minus-sign" style="font-size: 24px;"></i>'.html_safe, change_role_user_path(user)

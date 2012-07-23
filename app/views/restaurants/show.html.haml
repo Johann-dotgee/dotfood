@@ -64,21 +64,67 @@
 
 .row
   .span12
-    .hero-unit
+    %blockquote
       %p= @restaurant.description
+      %strong= @restaurant.name
 
-%h3 Dates d'ouvertures
-
-.hero-unit= @restaurant.intervals.inspect
 
 %table.table.table-striped
   %tr
+    %th
     %th #Lundi
     %th #Mardi
     %th #Mercredi
     %th #Jeudi
     %th #Vendredi
-
+  %tr
+    %th # #{t(:morning)}
+    %td
+      = @restaurant.intervals.where(:day => t(:monday)).first.interval_type[t(:morning)].blank? ? '<span class="red">Fermé</span>'.html_safe : '<span class="green">Ouvert</span>'.html_safe
+    %td
+      = @restaurant.intervals.where(:day => t(:tuesday)).first.interval_type[t(:morning)].blank? ? '<span class="red">Fermé</span>'.html_safe : '<span class="green">Ouvert</span>'.html_safe
+    %td
+      = @restaurant.intervals.where(:day => t(:wednesday)).first.interval_type[t(:morning)].blank? ? '<span class="red">Fermé</span>'.html_safe : '<span class="green">Ouvert</span>'.html_safe
+    %td
+      = @restaurant.intervals.where(:day => t(:thursday)).first.interval_type[t(:morning)].blank? ? '<span class="red">Fermé</span>'.html_safe : '<span class="green">Ouvert</span>'.html_safe
+    %td
+      = @restaurant.intervals.where(:day => t(:friday)).first.interval_type[t(:morning)].blank? ? '<span class="red">Fermé</span>'.html_safe : '<span class="green">Ouvert</span>'.html_safe
+  %tr
+    %th # #{t(:lunch)}
+    %td
+      = @restaurant.intervals.where(:day => t(:monday)).first.interval_type[t(:lunch)].blank? ? '<span class="red">Fermé</span>'.html_safe : '<span class="green">Ouvert</span>'.html_safe
+    %td
+      = @restaurant.intervals.where(:day => t(:tuesday)).first.interval_type[t(:lunch)].blank? ? '<span class="red">Fermé</span>'.html_safe : '<span class="green">Ouvert</span>'.html_safe
+    %td
+      = @restaurant.intervals.where(:day => t(:wednesday)).first.interval_type[t(:lunch)].blank? ? '<span class="red">Fermé</span>'.html_safe : '<span class="green">Ouvert</span>'.html_safe
+    %td
+      = @restaurant.intervals.where(:day => t(:thursday)).first.interval_type[t(:lunch)].blank? ? '<span class="red">Fermé</span>'.html_safe : '<span class="green">Ouvert</span>'.html_safe
+    %td
+      = @restaurant.intervals.where(:day => t(:friday)).first.interval_type[t(:lunch)].blank? ? '<span class="red">Fermé</span>'.html_safe : '<span class="green">Ouvert</span>'.html_safe
+  %tr
+    %th # #{t(:afternoon)}
+    %td
+      = @restaurant.intervals.where(:day => t(:monday)).first.interval_type[t(:afternoon)].blank? ? '<span class="red">Fermé</span>'.html_safe : '<span class="green">Ouvert</span>'.html_safe
+    %td
+      = @restaurant.intervals.where(:day => t(:tuesday)).first.interval_type[t(:afternoon)].blank? ? '<span class="red">Fermé</span>'.html_safe : '<span class="green">Ouvert</span>'.html_safe
+    %td
+      = @restaurant.intervals.where(:day => t(:wednesday)).first.interval_type[t(:afternoon)].blank? ? '<span class="red">Fermé</span>'.html_safe : '<span class="green">Ouvert</span>'.html_safe
+    %td
+      = @restaurant.intervals.where(:day => t(:thursday)).first.interval_type[t(:afternoon)].blank? ? '<span class="red">Fermé</span>'.html_safe : '<span class="green">Ouvert</span>'.html_safe
+    %td
+      = @restaurant.intervals.where(:day => t(:friday)).first.interval_type[t(:afternoon)].blank? ? '<span class="red">Fermé</span>'.html_safe : '<span class="green">Ouvert</span>'.html_safe
+  %tr
+    %th # #{t(:evening)}
+    %td
+      = @restaurant.intervals.where(:day => t(:monday)).first.interval_type[t(:evening)].blank? ? '<span class="red">Fermé</span>'.html_safe : '<span class="green">Ouvert</span>'.html_safe
+    %td
+      = @restaurant.intervals.where(:day => t(:tuesday)).first.interval_type[t(:evening)].blank? ? '<span class="red">Fermé</span>'.html_safe : '<span class="green">Ouvert</span>'.html_safe
+    %td
+      = @restaurant.intervals.where(:day => t(:wednesday)).first.interval_type[t(:evening)].blank? ? '<span class="red">Fermé</span>'.html_safe : '<span class="green">Ouvert</span>'.html_safe
+    %td
+      = @restaurant.intervals.where(:day => t(:thursday)).first.interval_type[t(:evening)].blank? ? '<span class="red">Fermé</span>'.html_safe : '<span class="green">Ouvert</span>'.html_safe
+    %td
+      = @restaurant.intervals.where(:day => t(:friday)).first.interval_type[t(:evening)].blank? ? '<span class="red">Fermé</span>'.html_safe : '<span class="green">Ouvert</span>'.html_safe
 
 
 .btn.btn-inverse
@@ -89,7 +135,10 @@
   = link_to edit_restaurant_path(@restaurant), :style => "color:white!important;" do
     %i.icon-pencil.icon-white
     Edit
-
+%br
+%br
+%br
+%br
 
 
 

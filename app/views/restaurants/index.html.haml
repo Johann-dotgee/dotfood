@@ -2,47 +2,35 @@
 
 %table.table.table-striped
   %tr
-    %th #Name
-    %th #Budget
-    %th #Quality
-    %th #Quantity
-    %th #To go
-    %th #Lundi
-    %th #Mardi
-    %th #Mercredi
-    %th #Jeudi
-    %th #Vendredi
-    %th #Actions
-    %th #Voter
+    %th= t(:name)
+    %th= t(:budget)
+    %th= t(:average)
+    %th= t(:opened)
+    %th
+      %i.icon-plus
+    %th
+      %i.icon-minus
+    %th= t(:actions)
 
   - @restaurants.each do |restaurant|
+    - average = 0
+    - restaurant.ratings.each do |mark|
+      - average += (mark.quality_food + mark.quality_service + mark.ambience + mark.quantity) / 4
+    - average = average/(restaurant.ratings.size)
     %tr
       %td= link_to restaurant.name, restaurant
       %td #{restaurant.budget_max} €
-      %td #{restaurant.time_to_go} min
+      %td= average
       %td
-        .btn-group
-          %button.btn.btn-primary Action
-          %button.btn.btn-primary.dropdown-toggle(data-toggle="dropdown")
-            %span.caret
-          %ul.dropdown-menu
-            %li= link_to 'Show', restaurant
-            %li= link_to 'Edit', edit_restaurant_path(restaurant)
-            %li= link_to 'Destroy', restaurant, :confirm => 'Are you sure?', :method => :delete
+        = restaurant.intervals.where(:day => t(:"#{Time.now.strftime('%A').downcase}")).first.closed ? t(:no) : t(:yes)
       %td
-        .btn-group
-          %button.btn.btn-primary Vote
-          %button.btn.btn-primary.dropdown-toggle(data-toggle="dropdown")
-            %span.caret
-          %ul.dropdown-menu
-            %li
-              = link_to upvote_restaurant_path(restaurant) do
-                %i.icon-plus
-                Positif
-            %li
-              = link_to downvote_restaurant_path(restaurant) do
-                %i.icon-minus
-                Négatif
+        = link_to '<i class="icon-thumbs-up" style="font-size: 24px;"></i>'.html_safe, upvote_restaurant_path(restaurant)
+      %td
+        = link_to '<i class="icon-thumbs-down" style="font-size: 24px;"></i>'.html_safe, downvote_restaurant_path(restaurant)
+      %td
+        = link_to '<i class="icon-eye-open" style="font-size: 24px;"></i>'.html_safe, restaurant
+        = link_to '<i class="icon-pencil" style="font-size: 24px;"></i>'.html_safe, edit_restaurant_path(restaurant)
+        = link_to '<i class="icon-remove" style="font-size: 24px;"></i>'.html_safe, restaurant, :confirm => 'Are you sure?', :method => :delete
 
 .btn.btn-inverse
   = link_to dashboard_restaurants_path, :style => "color:white!important;" do

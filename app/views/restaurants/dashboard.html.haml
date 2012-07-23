@@ -1,10 +1,12 @@
 %h1 Listing restaurants
 
-
 %table.table.table-striped
   %tr
     %th #Name
-    %th #Voter
+    %th
+      %i.icon-plus
+    %th
+      %i.icon-minus
     %th #Votes positifs
     %th #Votes négatifs
     %th #Total votes
@@ -13,21 +15,11 @@
   - @restaurants.each do |restaurant|
     -if restaurant.votes.count > 0 && restaurant.votes.last.updated_at == Date.today
       %tr
-        %td= restaurant.name
+        %td= link_to restaurant.name, restaurant
         %td
-          .btn-group
-            %button.btn.btn-primary Vote
-            %button.btn.btn-primary.dropdown-toggle(data-toggle="dropdown")
-              %span.caret
-            %ul.dropdown-menu
-              %li
-                = link_to upvote_restaurant_path(restaurant) do
-                  %i.icon-plus
-                  Positif
-              %li
-                = link_to downvote_restaurant_path(restaurant) do
-                  %i.icon-minus
-                  Négatif
+          = link_to '<i class="icon-thumbs-up" style="font-size: 24px;"></i>'.html_safe, upvote_restaurant_path(restaurant)
+        %td
+          = link_to '<i class="icon-thumbs-down" style="font-size: 24px;"></i>'.html_safe, downvote_restaurant_path(restaurant)
         %td
           -user = restaurant.votes.map { |vote| vote.voter.first_name if (vote.updated_at == Date.today && vote.vote_flag == true) }.compact.join(', ')
           %span.badge.badge-success{:rel => "popover", "data-content" => "#{user}", "data-original-title" => "Votants"}=restaurant.votes.count(:all, :conditions => {:updated_at => Time.now.midnight..(Time.now.midnight + 1.day), :vote_flag => true})
