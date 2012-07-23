@@ -8,10 +8,12 @@ Dotfood::Application.routes.draw do
     member do
       get 'change_role'
       get 'add_role'
+      get 'eat_alone'
     end
   end
 
   resources :votes 
+
 
   resources :restaurants do
     resources :ratings

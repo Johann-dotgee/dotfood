@@ -68,4 +68,16 @@ class UsersController < ApplicationController
     end
   end
 
+  def eat_alone
+    @alone = EatAlone.new
+    @alone.eat_alone = true
+    @alone.user_id = params[:id]
+    if EatAlone.find(:all, :conditions => ["user_id=? AND created_at=?", params[:id], Date.today]).blank?
+      @alone.save
+    else
+      flash[:error] = "Vous avez déjà indiqué que vous ne désirez pas manger avec les autres"
+    end
+    redirect_to dashboard_restaurants_path
+  end
+
 end

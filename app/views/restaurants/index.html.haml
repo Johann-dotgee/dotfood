@@ -1,3 +1,4 @@
+- alone = @alone.map { |alone| alone.first_name + " " + alone.last_name.upcase }.compact.join(', ') unless @alone.blank?
 %h1 Listing restaurants
 
 %table.table.table-striped
@@ -13,6 +14,7 @@
     %th= t(:actions)
 
   - @restaurants.each do |restaurant|
+    - name = current_user.first_name+" "+current_user.last_name
     - average = 0
     - restaurant.ratings.each do |mark|
       - average += (mark.quality_food + mark.quality_service + mark.ambience + mark.quantity) / 4
@@ -22,11 +24,17 @@
       %td #{restaurant.budget_min}€ - #{restaurant.budget_max}€
       %td= average
       %td
-        = restaurant.intervals.where(:day => t(:"#{Time.now.strftime('%A').downcase}")).first.closed ? t(:no) : t(:yes)
+        = restaurant.intervals.where(:day => Time.now.strftime('%A')).first.closed ? t(:no) : t(:yes)
       %td
-        = link_to '<i class="icon-thumbs-up" style="font-size: 24px;"></i>'.html_safe, upvote_restaurant_path(restaurant)
+        - if alone[name].blank?
+          %i.icon-thumbs-up{:style => "font-size: 24px;"}
+        - else
+          = link_to '<i class="icon-thumbs-up" style="font-size: 24px;"></i>'.html_safe, upvote_restaurant_path(restaurant)
       %td
-        = link_to '<i class="icon-thumbs-down" style="font-size: 24px;"></i>'.html_safe, downvote_restaurant_path(restaurant)
+        - if alone[name].blank?
+          %i.icon-thumbs-down{:style => "font-size: 24px;"}
+        - else
+          = link_to '<i class="icon-thumbs-down" style="font-size: 24px;"></i>'.html_safe, downvote_restaurant_path(restaurant)
       %td
         = link_to '<i class="icon-eye-open" style="font-size: 24px;"></i>'.html_safe, restaurant
         = link_to '<i class="icon-pencil" style="font-size: 24px;"></i>'.html_safe, edit_restaurant_path(restaurant)

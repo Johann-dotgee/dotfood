@@ -5,6 +5,7 @@ class RestaurantsController < ApplicationController
 
   def index
     @restaurants = Restaurant.find(:all)
+    @alone = get_alones
     respond_with(@restaurants)
   end
 
@@ -12,17 +13,8 @@ class RestaurantsController < ApplicationController
   # GET /restaurants.xml
   def dashboard
     @restaurants = Restaurant.find :all, :include => [:votes], :conditions => {"votes.created_at" => Date.today}
-    #@test = []
-    #@restaurants.each do |restaurant|
-      #@test << restaurant.diff
-    #end
-    #raise @test.inspect
     @restaurants = @restaurants.sort{|a,b| b.diff <=> a.diff}
-    #@test = {}
-    #@restaurants.each do |restaurant|
-      #@test[restaurant.name] = restaurant.diff
-    #end
-    #raise @test.inspect
+    @alone = get_alones
     respond_with(@restaurants)
   end
 
@@ -102,6 +94,15 @@ class RestaurantsController < ApplicationController
 
 
   private
+
+    def get_alones
+      alones = EatAlone.all
+      ids = Array.new
+      alones.each do |alone|
+        ids << alone.user_id
+      end
+      @alone = User.where("id in (:ids)", :ids => ids) unless ids.blank?
+    end
 
     def parse_interval
       @parameters = params[:restaurant][:intervals_attributes]

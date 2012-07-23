@@ -1,3 +1,4 @@
+- alone = @alone.map { |alone| alone.first_name + " " + alone.last_name.upcase }.compact.join(', ') unless @alone.blank?
 %h1 Listing restaurants
 
 %table.table.table-striped
@@ -14,25 +15,38 @@
 
   - @restaurants.each do |restaurant|
     -if restaurant.votes.count > 0 && restaurant.votes.last.updated_at == Date.today
+      - name = current_user.first_name+" "+current_user.last_name
       %tr
         %td= link_to restaurant.name, restaurant
         %td
-          = link_to '<i class="icon-thumbs-up" style="font-size: 24px;"></i>'.html_safe, upvote_restaurant_path(restaurant)
+          - if alone[name].blank?
+            %i.icon-thumbs-up{:style => "font-size: 24px;"}
+          - else
+            = link_to '<i class="icon-thumbs-up" style="font-size: 24px;"></i>'.html_safe, upvote_restaurant_path(restaurant)
         %td
-          = link_to '<i class="icon-thumbs-down" style="font-size: 24px;"></i>'.html_safe, downvote_restaurant_path(restaurant)
+          - if alone[name].blank?
+            %i.icon-thumbs-down{:style => "font-size: 24px;"}
+          - else
+            = link_to '<i class="icon-thumbs-down" style="font-size: 24px;"></i>'.html_safe, downvote_restaurant_path(restaurant)
         %td
-          -user = restaurant.votes.map { |vote| vote.voter.first_name if (vote.updated_at == Date.today && vote.vote_flag == true) }.compact.join(', ')
+          - user = restaurant.votes.map { |vote| vote.voter.first_name if (vote.updated_at == Date.today && vote.vote_flag == true) }.compact.join(', ')
           %span.badge.badge-success{:rel => "popover", "data-content" => "#{user}", "data-original-title" => "Votants"}=restaurant.votes.count(:all, :conditions => {:updated_at => Time.now.midnight..(Time.now.midnight + 1.day), :vote_flag => true})
         %td
-          -user = restaurant.votes.map { |vote| vote.voter.first_name if (vote.updated_at == Date.today && vote.vote_flag == false) }.compact.join(', ')
+          - user = restaurant.votes.map { |vote| vote.voter.first_name if (vote.updated_at == Date.today && vote.vote_flag == false) }.compact.join(', ')
           %span.badge.badge-important{:rel => "popover", "data-content" => "#{user}", "data-original-title" => "Votants"}=restaurant.votes.count(:all, :conditions => {:updated_at => Time.now.midnight..(Time.now.midnight + 1.day), :vote_flag => false})
         %td
           -user = restaurant.votes.map { |vote| vote.voter.first_name if vote.updated_at == Date.today }.compact.join(', ')
           %span.badge.badge-info{:rel => "popover", "data-content" => "#{user}", "data-original-title" => "Votants"}=restaurant.votes.count(:all, :conditions => {:updated_at => Time.now.midnight..(Time.now.midnight + 1.day)})
+
+%br
+%br
+
+%p
+  %span.badge.badge-info{:rel => "popover", "data-content" => "#{alone}", "data-original-title" => "Ceux qui mangent seuls"}= @alone.blank? ? "0" : @alone.size
+  personne(s) ne désire(nt) pas manger avec le groupe
+
 %br
 %br
 %br
 
-= link_to 'New Restaurant', new_restaurant_path, :class => "btn btn-primary", :style => "color:white!important;"
--if current_user.has_role? :admin
-  = link_to 'Restaurants', restaurants_path, :class => "btn btn-primary", :style => "color:white!important;"
+= link_to 'Je ne mange pas avec vous', eat_alone_user_path(current_user), :class => "btn btn-info", :style => "color:white!important;"
