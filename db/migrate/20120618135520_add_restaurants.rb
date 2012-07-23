@@ -8,10 +8,10 @@ class AddRestaurants < ActiveRecord::Migration
       t.text :description
       t.decimal :budget_min
       t.decimal :budget_max
-      t.string :address
+      # t.string :address
       t.integer :time_to_go
-      t.decimal :latitude
-      t.decimal :longitude
+      # t.decimal :latitude
+      # t.decimal :longitude
     end
   end
 
