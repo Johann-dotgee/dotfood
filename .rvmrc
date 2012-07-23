@@ -1,1 +1,1 @@
-rvm use ruby-1.9.3@dotfood --create
+rvm use ruby-1.9.3-p194@dotfood_prod --create
