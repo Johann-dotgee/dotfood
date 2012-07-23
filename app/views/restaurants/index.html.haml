@@ -12,7 +12,8 @@
       %i.icon-plus
     %th
       %i.icon-minus
-    %th= t(:actions)
+    - if(user_signed_in? && (current_user.has_role? :admin)) 
+      %th= t(:actions)
 
   - @restaurants.each do |restaurant|
     - name = current_user.first_name+" "+current_user.last_name.upcase
@@ -36,11 +37,12 @@
           = link_to '<i class="icon-thumbs-down" style="font-size: 24px;"></i>'.html_safe, downvote_restaurant_path(restaurant)
         - else
           %i.icon-thumbs-down{:style => "font-size: 24px;"}
-          
-      %td
-        = link_to '<i class="icon-eye-open" style="font-size: 24px;"></i>'.html_safe, restaurant
-        = link_to '<i class="icon-pencil" style="font-size: 24px;"></i>'.html_safe, edit_restaurant_path(restaurant)
-        = link_to '<i class="icon-remove" style="font-size: 24px;"></i>'.html_safe, restaurant, :confirm => 'Are you sure?', :method => :delete
+      
+      - if(user_signed_in? && (current_user.has_role? :admin))  
+        %td
+          = link_to '<i class="icon-eye-open" style="font-size: 24px;"></i>'.html_safe, restaurant
+          = link_to '<i class="icon-pencil" style="font-size: 24px;"></i>'.html_safe, edit_restaurant_path(restaurant)
+          = link_to '<i class="icon-remove" style="font-size: 24px;"></i>'.html_safe, restaurant, :confirm => 'Are you sure?', :method => :delete
 
 .btn.btn-inverse
   = link_to dashboard_restaurants_path, :style => "color:white!important;" do
