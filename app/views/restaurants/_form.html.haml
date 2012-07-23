@@ -1,18 +1,113 @@
 = simple_form_for(@restaurant) do |f|
   = f.error_notification
 
-  .form-inputs
-    = f.input :name
-    = f.input :address
-    = f.input :budget
-    = f.input :quality
-    = f.input :quantity
-    = f.input :time_to_go
-    = f.input :lundi
-    = f.input :mardi
-    = f.input :mercredi
-    = f.input :jeudi
-    = f.input :vendredi
+  .form-horizontal
+    .row
+      .span12
+        %img#restaurant_picture_img
+    %br
+    %br
+    .row
+      .span6
+        .control-group
+          .control-label= f.label t(:picture_restaurant_label)
+          .controls= f.input_field :picture
+        .control-group
+          .control-label= f.label t(:name_restaurant_label)
+          .controls= f.input_field :name
+        .control-group
+          .control-label= f.label t(:speciality_restaurant_label)
+          .controls= f.input_field :speciality
+        .control-group
+          .control-label= f.label t(:type_restaurant_label)
+          .controls= f.input_field :restaurant_type
+        .control-group
+          .control-label= f.label t(:address_restaurant_label)
+          .controls= f.input_field :address
+        .control-group
+          .control-label= f.label t(:budget_min_restaurant_label)
+          .controls= f.input_field :budget_min
+        .control-group
+          .control-label= f.label t(:budget_max_restaurant_label)
+          .controls= f.input_field :budget_max
+        .control-group
+          .control-label= f.label t(:description_restaurant_label)
+          .controls= f.input_field :description, :as => :text
+        .control-group
+          .control-label= f.label t(:time_to_go_restaurant_label)
+          .controls= f.input_field :time_to_go
+
+
+
+
+
+
+      = f.simple_fields_for :ratings, f.object.ratings.new do |note|
+
+        .span6
+          .control-group
+            .control-label= note.label t(:quality_service_restaurant_label)
+            .controls= note.input_field :quality_service, :collection => 0..10, :prompt => t(:mark_prompt)
+          .control-group
+            .control-label= note.label t(:quantity_restaurant_label)
+            .controls= note.input_field :quantity, :collection => 0..10, :prompt => t(:mark_prompt)
+          .control-group
+            .control-label= note.label t(:quality_food_restaurant_label)
+            .controls= note.input_field :quality_food, :collection => 0..10, :prompt => t(:mark_prompt)
+          .control-group
+            .control-label= note.label t(:ambience_restaurant_label)
+            .controls= note.input_field :ambience, :collection => 0..10, :prompt => t(:mark_prompt)
+
+
+
+      .row
+      - days = [ t(:monday), t(:tuesday), t(:wednesday), t(:friday), t(:thursday), t(:satursday), t(:sunday) ]
+      - days.each do |day|
+        = f.simple_fields_for :intervals, f.object.intervals.new do |interval|
+          .span4
+            .control-group
+              .controls= interval.input_field :day, :value => day
+
+            .control-group
+              .control-label= interval.label t(:opened)
+              .controls= interval.input_field :interval_type, :collection => [t(:morning), t(:lunch), t(:afternoon), t(:evening)], :as => :check_boxes
+        /   .span4
+        /     .control-group
+        /       = interval.input :wednesday, :collection => {"Aucun" => false, "Matin" => true, "Midi" => true, "Goûter" => true, "Soir" => true}, :prompt => "Ouvert ou Fermé...?", :as => :check_boxes
+        / .row
+        /   .span4
+        /     .control-group
+        /       = interval.input :thursday, :collection => {"Aucun" => false, "Matin" => true, "Midi" => true, "Goûter" => true, "Soir" => true}, :prompt => "Ouvert ou Fermé...?", :as => :check_boxes
+        /   .span4
+        /     .control-group
+        /       = interval.input :friday, :collection => {"Aucun" => false, "Matin" => true, "Midi" => true, "Goûter" => true, "Soir" => true}, :prompt => "Ouvert ou Fermé...?", :as => :check_boxes
+
+
+
+
+
+
+    / .row
+    /   .span12
+    /     .control-group
+
+
+    / = f.input :address
+    / = f.input :budget
+    / = f.input :description
+    / = f.input :specialite
+    / = f.input :picture
+    / = f.input :quality_service, :collection => 0..10, :prompt => "Note sur 10..."
+    / = f.input :quality_food, :collection => 0..10, :prompt => "Note sur 10..."
+    / = f.input :quantity, :collection => 0..10, :prompt => "Note sur 10..."
+    / = f.input :ambience, :collection => 0..10, :prompt => "Note sur 10..."
+    / = f.input :average, :collection => 0..10, :prompt => "Note sur 10..."
+    / = f.input :time_to_go
+    / = f.input :monday, :collection => {"Aucun" => false, "Matin" => true, "Midi" => true, "Goûter" => true, "Soir" => true}, :prompt => "Ouvert ou Fermé...?", :as => :check_boxes
+    / = f.input :tuesday, :collection => {"Aucun" => false, "Matin" => true, "Midi" => true, "Goûter" => true, "Soir" => true}, :prompt => "Ouvert ou Fermé...?", :as => :check_boxes
+    / = f.input :wednesday, :collection => {"Aucun" => false, "Matin" => true, "Midi" => true, "Goûter" => true, "Soir" => true}, :prompt => "Ouvert ou Fermé...?", :as => :check_boxes
+    / = f.input :thursday, :collection => {"Aucun" => false, "Matin" => true, "Midi" => true, "Goûter" => true, "Soir" => true}, :prompt => "Ouvert ou Fermé...?", :as => :check_boxes
+    / = f.input :friday, :collection => {"Aucun" => false, "Matin" => true, "Midi" => true, "Goûter" => true, "Soir" => true}, :prompt => "Ouvert ou Fermé...?", :as => :check_boxes
 
   .form-actions
-    = f.button :submit
+    = f.button :submit, :class => "btn-primary"

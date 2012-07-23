@@ -17,16 +17,9 @@
 
   - @restaurants.each do |restaurant|
     %tr
-      %td= restaurant.name
-      %td #{restaurant.budget} €
-      %td #{restaurant.quality} / 10
-      %td #{restaurant.quantity} / 10
+      %td= link_to restaurant.name, restaurant
+      %td #{restaurant.budget_max} €
       %td #{restaurant.time_to_go} min
-      %td= if(restaurant.lundi) then "Ouvert" else "Fermé" end
-      %td= if(restaurant.mardi) then "Ouvert" else "Fermé" end
-      %td= if(restaurant.mercredi) then "Ouvert" else "Fermé" end
-      %td= if(restaurant.jeudi) then "Ouvert" else "Fermé" end
-      %td= if(restaurant.vendredi) then "Ouvert" else "Fermé" end
       %td
         .btn-group
           %button.btn.btn-primary Action

@@ -1,6 +1,7 @@
 #encoding:utf-8
 class RestaurantsController < ApplicationController
   before_filter :authenticate_user!
+  before_filter :parse_interval, :only => :create
 
   def index
     @restaurants = Restaurant.find(:all)
@@ -97,7 +98,36 @@ class RestaurantsController < ApplicationController
     end
   end
 
+
+
+
   private
+
+    def parse_interval
+      # @parameters = params[:restaurant][:intervals_attributes]
+      # params[:restaurant][:intervals_attributes].each do |k, par|
+      #   if par["interval_type"].blank?
+      #     to_merge = Hash.new
+      #     key_temp = k.to_i * 10 + i.to_i
+      #     to_merge = { key_temp => { "day" => par["day"], "interval_type" => "", "closed" => true }}
+      #     @parameters = @parameters.merge(to_merge)
+      #   else
+      #     par["interval_type"].pop
+      #     for i in 0..(par["interval_type"].size-1) do
+      #       to_merge = Hash.new
+      #       key_temp = k.to_i * 10 + i.to_i
+      #       to_merge = { key_temp => { "day" => par["day"], "interval_type" => par["interval_type"][i], "closed" => false }}
+      #       @parameters = @parameters.merge(to_merge)
+      #       par["interval_type"].drop(1)
+      #     end
+      #   end
+      # end
+
+      # params[:restaurant][:intervals_attributes] = @parameters
+      # params[:restaurant][:intervals_attributes] = params[:restaurant][:intervals_attributes].drop(7)
+      # raise params[:restaurant][:intervals_attributes].inspect
+    end
+
     def todays_votes(id)
       conditions = {:updated_at => Time.now.midnight..(Time.now.midnight + 1.day), :votable_id => id}
       return current_user.find_votes conditions
@@ -113,11 +143,11 @@ class RestaurantsController < ApplicationController
         unless type_flag == type
           @restaurant.vote :voter => current_user, :vote => type
           flash[:notice] = "Votre vote a bien été modifié."
-	else
-	  type_vote = type == "like" ? "pour" : "contre"
-	  flash[:error] = "Vous avez déjà voté #{type_vote} ce restaurant."
-	end
+      	else
+      	  type_vote = type == "like" ? "pour" : "contre"
+      	  flash[:error] = "Vous avez déjà voté #{type_vote} ce restaurant."
+      	end
       end
-
     end
+
 end

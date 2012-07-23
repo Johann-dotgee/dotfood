@@ -1,63 +1,75 @@
 %p#notice= notice
 
-%h2= @restaurant.name
+.page-header
+  %h1= @restaurant.name
 %br
+
 .row
-  %p.span2
-    %b Budget moyen estimé:
-    .span3
-      -if @restaurant.budget == 1
-        =image_tag '/assets/1euro.jpeg', :height => "30px", :width => "30px"
+  .span12
+    %img{:src => @restaurant.picture}
 
-      -if @restaurant.budget == 2
-        =image_tag '/assets/2euro.jpeg', :height => "30px", :width => "30px"
+%br
+
+.row
+  .span2
+    %p
+      %strong Type:
+      = @restaurant.restaurant_type
+
+  .span2
+    %p
+      %strong Spécialité:
+      = @restaurant.speciality
 
 
-      -if @restaurant.budget > 2 && @restaurant.budget%2 == 0
-        -for @restaurant.budget in 1..@restaurant.budget/2-1
-          =image_tag '/assets/2euro.jpeg', :height => "30px", :width => "30px"
-          + 
-        =image_tag '/assets/2euro.jpeg', :height => "30px", :width => "30px"
+  .span2
+    %p
+      %strong Budget min:
+      = "#{@restaurant.budget_min} €"
 
-
-      -if @restaurant.budget > 2 && @restaurant.budget%2 != 0
-        -for @restaurant.budget in 1..@restaurant.budget/2
-          =image_tag '/assets/2euro.jpeg', :height => "30px", :width => "30px"
-          + 
-        =image_tag '/assets/1euro.jpeg', :height => "30px", :width => "30px"
+  .span2
+    %p
+      %strong Budget max:
+      = "#{@restaurant.budget_max} €"
         
+  .span3
+    %p
+      %strong Temps de marche:
+      = "#{@restaurant.time_to_go} minutes"
 
-.row  
-  %p.span1
-    %b Qualité:
-    .span4
-      -for i in 1..@restaurant.quality do
-        =image_tag '/assets/mark1.png', :height => "20px", :width => "20px"
-
-      -for i in @restaurant.quality+1..10 do
-        =image_tag '/assets/mark2.png', :height => "20px", :width => "20px"
 
 .row
-  %p.span1
-    %b Quantité:
-    .span4
-      -for i in 1..@restaurant.quantity do
-        =image_tag '/assets/mark1.png', :height => "20px", :width => "20px"
+  .span2
+    %p
+      %strong Service:
+      = "#{@restaurant.ratings.first.quality_service} / 10"
 
-      -for i in @restaurant.quantity+1..10 do
-        =image_tag '/assets/mark2.png', :height => "20px", :width => "20px"
+  .span2
+    %p
+      %strong Nourriture:
+      = "#{@restaurant.ratings.first.quality_food} / 10"
 
-%p
-  %b Distance à vol d'oiseau:
-  #{(@distance*1000).round} mètres
 
-%p
-  %b Temps de marche estimé:
-  #{@restaurant.time_to_go} minutes
+  .span2
+    %p
+      %strong Ambiance:
+      = "#{@restaurant.ratings.first.ambience} / 10"
+
+  .span2
+    %p
+      %strong Quantité:
+      = "#{@restaurant.ratings.first.quantity} / 10"
 
 %br
+
+.row
+  .span12
+    .hero-unit
+      %p= @restaurant.description
 
 %h3 Dates d'ouvertures
+
+.hero-unit= @restaurant.intervals.inspect
 
 %table.table.table-striped
   %tr
@@ -66,12 +78,6 @@
     %th #Mercredi
     %th #Jeudi
     %th #Vendredi
-  %tr
-    %td= if(@restaurant.lundi) then "Ouvert" else "Fermé" end
-    %td= if(@restaurant.mardi) then "Ouvert" else "Fermé" end
-    %td= if(@restaurant.mercredi) then "Ouvert" else "Fermé" end
-    %td= if(@restaurant.jeudi) then "Ouvert" else "Fermé" end
-    %td= if(@restaurant.vendredi) then "Ouvert" else "Fermé" end
 
 
 

@@ -11,10 +11,28 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120704155048) do
+ActiveRecord::Schema.define(:version => 20120719083107) do
 
-  create_table "admins", :force => true do |t|
-    t.string   "first_name",             :default => "", :null => false
+  create_table "favourites", :force => true do |t|
+    t.integer "users_id"
+    t.integer "restaurants_id"
+  end
+
+  create_table "groups", :force => true do |t|
+    t.string  "name"
+    t.string  "group_type"
+    t.integer "user_id"
+  end
+
+  create_table "interval", :force => true do |t|
+    t.string  "interval_type"
+    t.boolean "closed"
+    t.time    "from"
+    t.time    "to"
+    t.integer "restaurant_id"
+  end
+
+  create_table "models", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
     t.string   "encrypted_password",     :default => "", :null => false
     t.string   "reset_password_token"
@@ -29,23 +47,31 @@ ActiveRecord::Schema.define(:version => 20120704155048) do
     t.datetime "updated_at",                             :null => false
   end
 
-  add_index "admins", ["email"], :name => "index_admins_on_email", :unique => true
-  add_index "admins", ["reset_password_token"], :name => "index_admins_on_reset_password_token", :unique => true
+  add_index "models", ["email"], :name => "index_models_on_email", :unique => true
+  add_index "models", ["reset_password_token"], :name => "index_models_on_reset_password_token", :unique => true
+
+  create_table "ratings", :force => true do |t|
+    t.decimal "quality_food"
+    t.decimal "quality_service"
+    t.decimal "ambience"
+    t.decimal "quantity"
+    t.decimal "waiting"
+    t.integer "users_id"
+    t.integer "restaurants_id"
+  end
 
   create_table "restaurants", :force => true do |t|
     t.string  "name"
-    t.integer "budget"
-    t.integer "quality"
-    t.integer "quantity"
-    t.integer "time_to_go"
-    t.boolean "lundi"
-    t.boolean "mardi"
-    t.boolean "mercredi"
-    t.boolean "jeudi"
-    t.boolean "vendredi"
+    t.string  "restaurant_type"
+    t.string  "speciality"
+    t.string  "picture"
+    t.text    "description"
+    t.decimal "budget_min"
+    t.decimal "budget_max"
     t.string  "address"
-    t.float   "longitude"
-    t.float   "latitude"
+    t.integer "time_to_go"
+    t.decimal "latitude"
+    t.decimal "longitude"
   end
 
   create_table "roles", :force => true do |t|
@@ -60,8 +86,13 @@ ActiveRecord::Schema.define(:version => 20120704155048) do
   add_index "roles", ["name"], :name => "index_roles_on_name"
 
   create_table "users", :force => true do |t|
-    t.string   "first_name",             :default => "", :null => false
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "password"
+    t.boolean  "activated"
+    t.string   "validation_token"
     t.string   "email",                  :default => "", :null => false
+    t.string   "login",                  :default => "", :null => false
     t.string   "encrypted_password",     :default => "", :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
@@ -71,8 +102,19 @@ ActiveRecord::Schema.define(:version => 20120704155048) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
+    t.string   "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+  end
+
+  add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true
+  add_index "users", ["email"], :name => "index_users_on_email", :unique => true
+  add_index "users", ["login"], :name => "index_users_on_login", :unique => true
+  add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
+
+  create_table "users_groups", :force => true do |t|
+    t.integer "restaurants_id"
+    t.integer "groups_id"
   end
 
   create_table "users_roles", :id => false, :force => true do |t|

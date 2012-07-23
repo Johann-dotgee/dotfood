@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  has_many :ratings
+  has_many :restaurants, :through => :ratings
 	rolify
 	acts_as_voter
   # Include default devise modules. Others available are:
