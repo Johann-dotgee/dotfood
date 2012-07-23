@@ -61,54 +61,18 @@
 
 
       .row
-      - days = [ t(:monday), t(:tuesday), t(:wednesday), t(:friday), t(:thursday), t(:satursday), t(:sunday) ]
+      - days = [ "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Satursday", "Sunday" ]
       - days.each do |day|
         = f.simple_fields_for :intervals, f.object.intervals.new do |interval|
           .span4
             .control-group
               .controls= interval.input_field :day, :value => day, :type => 'hidden'
-              %h3{:style => "text-align: center"}= day
+              %h3{:style => "text-align: center"}= t(:"#{day.downcase}")
 
             .control-group
               .control-label= interval.label t(:opened)
-              .controls= interval.input_field :interval_type, :collection => [t(:morning), t(:lunch), t(:afternoon), t(:evening)], :as => :check_boxes
-        /   .span4
-        /     .control-group
-        /       = interval.input :wednesday, :collection => {"Aucun" => false, "Matin" => true, "Midi" => true, "Goûter" => true, "Soir" => true}, :prompt => "Ouvert ou Fermé...?", :as => :check_boxes
-        / .row
-        /   .span4
-        /     .control-group
-        /       = interval.input :thursday, :collection => {"Aucun" => false, "Matin" => true, "Midi" => true, "Goûter" => true, "Soir" => true}, :prompt => "Ouvert ou Fermé...?", :as => :check_boxes
-        /   .span4
-        /     .control-group
-        /       = interval.input :friday, :collection => {"Aucun" => false, "Matin" => true, "Midi" => true, "Goûter" => true, "Soir" => true}, :prompt => "Ouvert ou Fermé...?", :as => :check_boxes
+              .controls= interval.input_field :interval_type, :collection => {t(:morning) => "Morning", t(:lunch) => "Lunch", t(:afternoon) => "Afternoon", t(:evening) => "Evening"}, :as => :check_boxes
 
-
-
-
-
-
-    / .row
-    /   .span12
-    /     .control-group
-
-
-    / = f.input :address
-    / = f.input :budget
-    / = f.input :description
-    / = f.input :specialite
-    / = f.input :picture
-    / = f.input :quality_service, :collection => 0..10, :prompt => "Note sur 10..."
-    / = f.input :quality_food, :collection => 0..10, :prompt => "Note sur 10..."
-    / = f.input :quantity, :collection => 0..10, :prompt => "Note sur 10..."
-    / = f.input :ambience, :collection => 0..10, :prompt => "Note sur 10..."
-    / = f.input :average, :collection => 0..10, :prompt => "Note sur 10..."
-    / = f.input :time_to_go
-    / = f.input :monday, :collection => {"Aucun" => false, "Matin" => true, "Midi" => true, "Goûter" => true, "Soir" => true}, :prompt => "Ouvert ou Fermé...?", :as => :check_boxes
-    / = f.input :tuesday, :collection => {"Aucun" => false, "Matin" => true, "Midi" => true, "Goûter" => true, "Soir" => true}, :prompt => "Ouvert ou Fermé...?", :as => :check_boxes
-    / = f.input :wednesday, :collection => {"Aucun" => false, "Matin" => true, "Midi" => true, "Goûter" => true, "Soir" => true}, :prompt => "Ouvert ou Fermé...?", :as => :check_boxes
-    / = f.input :thursday, :collection => {"Aucun" => false, "Matin" => true, "Midi" => true, "Goûter" => true, "Soir" => true}, :prompt => "Ouvert ou Fermé...?", :as => :check_boxes
-    / = f.input :friday, :collection => {"Aucun" => false, "Matin" => true, "Midi" => true, "Goûter" => true, "Soir" => true}, :prompt => "Ouvert ou Fermé...?", :as => :check_boxes
 
   .form-actions
     = f.button :submit, :class => "btn-primary"
