@@ -96,7 +96,7 @@ class RestaurantsController < ApplicationController
   private
 
     def get_alones
-      alones = EatAlone.all
+      alones = EatAlone.all(:conditions => {:updated_at => Date.today})
       ids = Array.new
       alones.each do |alone|
         ids << alone.user_id
