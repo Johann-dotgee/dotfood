@@ -39,4 +39,4 @@ en:
   yes: "Yes"
   no: "No"
   waiting_restaurant_label: "Wait"
-  reminder_title: "It's time to vote on <span style='color:black;font-size:24px;'>.</span><span style='color:#78AB46;'>dot</span><span style='blue'>food</span> !"
+  reminder_title: "It's time to vote on <div style='color:black;background-color:black;height:2px;width:2px;border-radius:40px;'>.</div><span style='color:#78AB46;'>dot</span><span style='blue'>food</span> !"

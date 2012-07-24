@@ -36,4 +36,4 @@ en:
   yes: "Oui"
   no: "Non"
   waiting_restaurant_label: "Attente"
-  reminder_title: "Il est l'heure de voter sur <span style='color:black;font-size:24px;'>.</span><span style='color:#78AB46;'>dot</span><span style='blue'>food</span> !"
+  reminder_title: "Il est l'heure de voter sur <div style='color:black;background-color:black;height:2px;width:2px;border-radius:40px;'>.</div><span style='color:#78AB46;'>dot</span><span style='blue'>food</span> !"
