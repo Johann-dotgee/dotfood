@@ -3,6 +3,6 @@ class Reminder < ActionMailer::Base
   
   def reminder(user)
     @user = user
-    mail(:to => "#{user.first_name} #{user.last_name.upcase} <#{user.email}>")
+    mail(:to => "#{user.first_name} <#{user.email}>")
   end
 end
