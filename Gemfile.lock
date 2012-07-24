@@ -63,6 +63,7 @@ GEM
       railties (~> 3.0)
     hike (1.2.1)
     i18n (0.6.0)
+    ice_cube (0.8.0)
     journey (1.0.4)
     jquery-rails (2.0.2)
       railties (>= 3.2.0, < 5.0)
@@ -159,8 +160,10 @@ DEPENDENCIES
   geocoder
   haml (>= 3.0.0)
   haml-rails
+  ice_cube
   jquery-rails
   less
+  mail
   mysql2
   pg
   rails (= 3.2.6)

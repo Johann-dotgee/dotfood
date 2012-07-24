@@ -17,3 +17,7 @@
     %p Rôle(s):
   .span3
     %p=@user.roles_name.compact.join(', ')
+- rule = IceCube::Rule.daily.hour_of_day(11)
+- schedule = IceCube::Schedule.new(Time.now-34.minute)
+- schedule.add_recurrence_rule rule
+.hero-unit= schedule.occurs_at? Time.now ?

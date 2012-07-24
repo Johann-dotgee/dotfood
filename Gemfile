@@ -50,3 +50,5 @@ gem "simple_form"
 gem 'acts_as_votable', :git => 'https://github.com/Johann-dotgee/acts_as_votable.git'
 gem "rolify"
 gem "geocoder"
+gem "mail"
+gem "ice_cube"

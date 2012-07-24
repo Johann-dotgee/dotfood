@@ -12,8 +12,11 @@ Dotfood::Application.routes.draw do
     end
   end
 
-  resources :votes 
+  resources :reminders do
+    get 'dotreminder'
+  end
 
+  resources :votes 
 
   resources :restaurants do
     resources :ratings
