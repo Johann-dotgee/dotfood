@@ -7,10 +7,6 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    # respond_to do |format|
-    #   Reminder.reminder(@user).deliver
-    #   format.html
-    # end
   end
 
   def edit

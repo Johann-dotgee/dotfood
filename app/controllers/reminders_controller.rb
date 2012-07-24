@@ -1,5 +1,5 @@
 class RemindersController < ActionController::Base
-  def dotreminder
+  def self.dotreminder
     @user = User.all
     respond_to do |format|
       @user.each do |user|
