@@ -72,6 +72,11 @@ class UsersController < ApplicationController
     @alone = EatAlone.new
     @alone.eat_alone = true
     @alone.user_id = params[:id]
+    conditions = {:updated_at => Date.today}
+    votes = current_user.find_votes conditions
+    votes.each do |vote|
+      vote.destroy
+    end
     if EatAlone.find(:all, :conditions => ["user_id=? AND created_at=?", params[:id], Date.today]).blank?
       @alone.save
     else
