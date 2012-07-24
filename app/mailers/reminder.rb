@@ -1,5 +1,5 @@
 class Reminder < ActionMailer::Base
-  default :from => "Dotfood <noreply@dotfood.fr>", :subject => "Dotfood Reminder"
+  default :from => "reminder@dotfood.dotgee.net", :subject => "Dotfood Reminder"
   
   def reminder(user)
     @user = user
