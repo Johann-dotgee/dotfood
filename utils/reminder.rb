@@ -1,2 +1,3 @@
-RemindersController.send(:dotreminder)
-puts "emails envoyés"
+User.all.each do |user|
+	Reminder.reminder(user).deliver
+end

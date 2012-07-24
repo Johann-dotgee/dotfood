@@ -1,0 +1,1 @@
+/usr/lib/nagios/plugins/check_http -H dotfood.dotgee.net -u http://dotfood.dotgee.net/reminders/1/dotreminder
