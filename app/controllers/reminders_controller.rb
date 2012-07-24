@@ -1,4 +1,4 @@
-class ReminderController < ActionController::Base
+class RemindersController < ActionController::Base
   def dotreminder
     @user = User.all
     respond_to do |format|
