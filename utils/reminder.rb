@@ -1,7 +1,8 @@
 User.all.each do |user|
   conditions = {:updated_at => Date.today}
   votes = user.find_votes conditions
-  if (votes.blank?) || (EatAlone.find(user.id, :conditions => {:updated_at => Date.today}).blank?) do
+  eat_alone = EatAlone.find(:conditions => {:updated_at => Date.today, :user_id => user.id})
+  if votes.blank? || eat_alone.blank? do
 	  Reminder.reminder(user).deliver
   end
 end
