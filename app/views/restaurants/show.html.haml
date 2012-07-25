@@ -50,33 +50,6 @@
           %strong= "#{note.first.to_s.capitalize}: "
           = "#{note.last.to_s} / 10"
 
-
-  / .span2
-  /   %p
-  /     %strong Service:
-  /     = @restaurant.ratings.blank? ? "<span class='red'>Non noté</span>".html_safe : "#{@averages[:service]} / 10"
-
-  / .span2
-  /   %p
-  /     %strong Nourriture:
-  /     = @restaurant.ratings.blank? ? "<span class='red'>Non noté</span>".html_safe : "#{@averages[:food]} / 10"
-
-
-  / .span2
-  /   %p
-  /     %strong Ambiance:
-  /     = @restaurant.ratings.blank? ? "<span class='red'>Non noté</span>".html_safe : "#{@averages[:ambience]} / 10"
-
-  / .span2
-  /   %p
-  /     %strong Quantité:
-  /     = @restaurant.ratings.blank? ? "<span class='red'>Non noté</span>".html_safe : "#{@averages[:quantity]} / 10"
-
-  / .span2
-  /   %p
-  /     %strong Attente:
-  /     = @restaurant.ratings.blank? ? "<span class='red'>Non noté</span>".html_safe : "#{@averages[:wait]} / 10"
-
 %br
 
 .row
@@ -104,6 +77,45 @@
 %br
 %br
 
+.page-header
+  %h3 Commentaires
+
+- @restaurant.comments.each do |comment|
+  .row
+    .span12
+      .pull-right
+        %p 
+          %strong
+            %em= "#{comment.user.first_name} #{comment.user.last_name.upcase}"
+  .row
+    .span10
+      %p{:style => "text-align: center;"}
+        %strong= comment.title
+      %br
+      %p{:style => "text-align: center;"}= comment.comment.gsub("\n\r","<br>").gsub("\r", "").gsub("\n", "<br />").html_safe
+
+  %hr
+
+.page-header
+  %h3 Leave a comment
+
+
+= simple_form_for([@restaurant, @comment]) do |f|
+  = f.error_notification
+  .form-horizontal
+    .row
+      .span12
+        .control-group
+          .control-label= f.label t(:comment_title)
+          .controls= f.input_field :title, :class => "span6"
+        .control-group
+          .control-label= f.label t(:comment_comment)
+          .controls= f.input_field :comment, :as => :text, :rows => 7, :class => "span6"
+
+  .form-actions
+    = f.button :submit, :class => "btn-primary"
+
+%hr
 .btn.btn-inverse
   = link_to restaurants_path, :style => "color:white!important;" do
     %i.icon-arrow-left.icon-white
@@ -123,7 +135,3 @@
 %br
 %br
 %br
-
-
-
-

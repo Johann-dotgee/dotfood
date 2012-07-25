@@ -40,3 +40,5 @@ en:
   no: "No"
   waiting_restaurant_label: "Wait"
   reminder_title: "It's time to vote on <span style='color:#5C5C5C;font-size:16px;'>&#8226;</span><span style='color:#78AB46;'>dot</span><span style='color:#5C5C5C;'>food</span> !"
+  comment_title: "Title"
+  comment_comment: "Comment"

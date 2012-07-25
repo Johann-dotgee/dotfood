@@ -39,6 +39,7 @@ class RestaurantsController < ApplicationController
   # GET /restaurants/1
   # GET /restaurants/1.xml
   def show
+    @comment = Comment.new
     @restaurant = Restaurant.find(params[:id])
     @distance = @restaurant.distance_to("2 Cité d'Aleth, Rennes 35000, France")
     unless @restaurant.ratings.blank?

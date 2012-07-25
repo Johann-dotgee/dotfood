@@ -52,3 +52,4 @@ gem "rolify"
 gem "geocoder"
 gem "mail"
 gem "ice_cube"
+gem 'acts_as_commentable'

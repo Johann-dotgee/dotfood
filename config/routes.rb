@@ -18,6 +18,7 @@ Dotfood::Application.routes.draw do
 
   resources :restaurants do
     resources :ratings
+    resources :comments
     member do
       get 'upvote'
       get 'downvote'
