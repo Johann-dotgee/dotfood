@@ -12,10 +12,6 @@ class Restaurant < ActiveRecord::Base
   after_validation :geocode
 
   def diff
-    #test = {}
-    #test["#{self.name}"] = {}
-    #test["#{self.name}"]["true"] = self.votes.map{|vote| vote.vote_flag}.count(true)
-    #test["#{self.name}"]["false"] = self.votes.map{|vote| vote.vote_flag}.count(false)   # "#{self.name}: #{self.votes.map{|vote| vote.vote_flag}.count(false)}" #- self.votes.map{|vote| vote.vote_flag}.count(false)
     self.votes.map{|vote| vote.vote_flag}.count(true) - self.votes.map{|vote| vote.vote_flag}.count(false)
   end
 end

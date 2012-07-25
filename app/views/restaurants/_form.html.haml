@@ -31,50 +31,27 @@
           .control-label= f.label t(:budget_max_restaurant_label)
           .controls= f.input_field :budget_max
         .control-group
-          .control-label= f.label t(:description_restaurant_label)
-          .controls= f.input_field :description, :as => :text
-        .control-group
           .control-label= f.label t(:time_to_go_restaurant_label)
           .controls= f.input_field :time_to_go
+      .span6
+        .control-group
+          .control-label= f.label t(:description_restaurant_label)
+          .controls= f.input_field :description, :as => :text
 
 
+      - if @restaurant.new_record?
+        .row
+        - days = [ "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Satursday", "Sunday" ]
+        - days.each do |day|
+          = f.simple_fields_for :intervals, f.object.intervals.new do |interval|
+            .span4
+              .control-group
+                .controls= interval.input_field :day, :value => day, :type => 'hidden'
+                %h3{:style => "text-align: center"}= t(:"#{day.downcase}")
 
-
-
-
-      = f.simple_fields_for :ratings, f.object.ratings.new do |note|
-
-        .span6
-          .control-group
-            .control-label= note.label t(:quality_service_restaurant_label)
-            .controls= note.input_field :quality_service, :collection => 0..10, :prompt => t(:mark_prompt)
-          .control-group
-            .control-label= note.label t(:quantity_restaurant_label)
-            .controls= note.input_field :quantity, :collection => 0..10, :prompt => t(:mark_prompt)
-          .control-group
-            .control-label= note.label t(:quality_food_restaurant_label)
-            .controls= note.input_field :quality_food, :collection => 0..10, :prompt => t(:mark_prompt)
-          .control-group
-            .control-label= note.label t(:ambience_restaurant_label)
-            .controls= note.input_field :ambience, :collection => 0..10, :prompt => t(:mark_prompt)
-          .control-group
-            .control-label= note.label t(:waiting_restaurant_label)
-            .controls= note.input_field :waiting, :collection => 0..10, :prompt => t(:mark_prompt)
-
-
-
-      .row
-      - days = [ "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Satursday", "Sunday" ]
-      - days.each do |day|
-        = f.simple_fields_for :intervals, f.object.intervals.new do |interval|
-          .span4
-            .control-group
-              .controls= interval.input_field :day, :value => day, :type => 'hidden'
-              %h3{:style => "text-align: center"}= t(:"#{day.downcase}")
-
-            .control-group
-              .control-label= interval.label t(:opened)
-              .controls= interval.input_field :interval_type, :collection => {t(:morning) => "Morning", t(:lunch) => "Lunch", t(:afternoon) => "Afternoon", t(:evening) => "Evening"}, :as => :check_boxes
+              .control-group
+                .control-label= interval.label t(:opened)
+                .controls= interval.input_field :interval_type, :collection => {t(:morning) => "Morning", t(:lunch) => "Lunch", t(:afternoon) => "Afternoon", t(:evening) => "Evening"}, :as => :check_boxes
 
 
   .form-actions

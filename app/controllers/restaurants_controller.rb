@@ -5,6 +5,10 @@ class RestaurantsController < ApplicationController
 
   def index
     @restaurants = Restaurant.find(:all)
+    @restaurants.each do |restaurant| 
+      averages = get_averages restaurant
+      restaurant["average"] = ((averages[:service] + averages[:food] + averages[:ambience] + averages[:quantity] + averages[:wait]) / 5).to_s
+    end
     @alone = get_alones
     respond_with(@restaurants)
   end
@@ -35,6 +39,7 @@ class RestaurantsController < ApplicationController
   def show
     @restaurant = Restaurant.find(params[:id])
     @distance = @restaurant.distance_to("2 Cité d'Aleth, Rennes 35000, France")
+    @averages = get_averages(@restaurant)
     respond_with(@restaurant)
   end
 
@@ -61,7 +66,7 @@ class RestaurantsController < ApplicationController
   def create
     @restaurant = Restaurant.new(params[:restaurant])
     @restaurant.save
-    respond_with(@restaurant)
+    redirect_to new_restaurant_rating_path(@restaurant)
   end
 
   # PUT /restaurants/1
@@ -104,32 +109,32 @@ class RestaurantsController < ApplicationController
       @alone = User.where("id in (:ids)", :ids => ids) unless ids.blank?
     end
 
+    def get_averages restaurant
+      service = 0
+      food = 0
+      quantity = 0
+      ambience = 0
+      wait = 0
+      div = restaurant.ratings.size
+      restaurant.ratings.each do |note|
+        service += note.quality_service
+        food += note.quality_food
+        ambience += note.ambience
+        quantity += note.quantity
+        wait += note.waiting
+      end
+      {:service => (service/div), :food => (food/div), :ambience => (ambience/div), :quantity => (quantity/div), :wait => (wait/div)}
+    end
+
     def parse_interval
       @parameters = params[:restaurant][:intervals_attributes]
       params[:restaurant][:intervals_attributes].each do |k, par|
-        par["user_id"] = current_user.id
         if par["interval_type"].blank?
           par["closed"] = true
-          # to_merge = Hash.new
-          # key_temp = k.to_i * 10 + i.to_i
-          # to_merge = { key_temp => { "day" => par["day"], "interval_type" => "", "closed" => true }}
-          # @parameters = @parameters.merge(to_merge)
         else
           par["closed"] = false
-          # par["interval_type"].pop
-          # for i in 0..(par["interval_type"].size-1) do
-          #   to_merge = Hash.new
-          #   key_temp = k.to_i * 10 + i.to_i
-          #   to_merge = { key_temp => { "day" => par["day"], "interval_type" => par["interval_type"][i], "closed" => false }}
-          #   @parameters = @parameters.merge(to_merge)
-          #   par["interval_type"].drop(1)
-          # end
         end
       end
-
-      # params[:restaurant][:intervals_attributes] = @parameters
-      # params[:restaurant][:intervals_attributes] = params[:restaurant][:intervals_attributes].drop(7)
-      # raise params[:restaurant][:intervals_attributes].inspect
     end
 
     def todays_votes(id)

@@ -1,0 +1,65 @@
+.page-header
+  %h1= @restaurant.name
+%br
+
+.row
+  .span12
+    %img{:src => @restaurant.picture}
+
+%br
+
+.row
+  .span2
+    %p
+      %strong Type:
+      = @restaurant.restaurant_type
+
+  .span2
+    %p
+      %strong Spécialité:
+      = @restaurant.speciality
+
+
+  .span2
+    %p
+      %strong Budget min:
+      = "#{@restaurant.budget_min} €"
+
+  .span2
+    %p
+      %strong Budget max:
+      = "#{@restaurant.budget_max} €"
+
+  .span3
+    %p
+      %strong Temps de marche:
+      = "#{@restaurant.time_to_go} minutes"
+
+
+= simple_form_for([@restaurant, @rating]) do |f|
+  = f.error_notification
+  .form-horizontal
+    .row
+      .span12
+        .control-group
+          .control-label= f.label t(:quality_service_restaurant_label)
+          .controls= f.input_field :quality_service, :collection => 0..10, :prompt => t(:mark_prompt)
+        .control-group
+          .control-label= f.label t(:quantity_restaurant_label)
+          .controls= f.input_field :quantity, :collection => 0..10, :prompt => t(:mark_prompt)
+    .row
+      .span12
+        .control-group
+          .control-label= f.label t(:quality_food_restaurant_label)
+          .controls= f.input_field :quality_food, :collection => 0..10, :prompt => t(:mark_prompt)
+        .control-group
+          .control-label= f.label t(:ambience_restaurant_label)
+          .controls= f.input_field :ambience, :collection => 0..10, :prompt => t(:mark_prompt)
+    .row
+      .span12
+        .control-group
+          .control-label= f.label t(:waiting_restaurant_label)
+          .controls= f.input_field :waiting, :collection => 0..10, :prompt => t(:mark_prompt)
+
+  .form-actions
+    = f.button :submit, :class => "btn-primary"

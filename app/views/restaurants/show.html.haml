@@ -1,5 +1,3 @@
-%p#notice= notice
-
 .page-header
   %h1= @restaurant.name
 %br
@@ -41,28 +39,28 @@
   .span2
     %p
       %strong Service:
-      = "#{@restaurant.ratings.where(:restaurant_id => @restaurant.id).first.quality_service} / 10"
+      = "#{@averages[:service]} / 10"
 
   .span2
     %p
       %strong Nourriture:
-      = "#{@restaurant.ratings.where(:restaurant_id => @restaurant.id).first.quality_food} / 10"
+      = "#{@averages[:food]} / 10"
 
 
   .span2
     %p
       %strong Ambiance:
-      = "#{@restaurant.ratings.where(:restaurant_id => @restaurant.id).first.ambience} / 10"
+      = "#{@averages[:ambience]} / 10"
 
   .span2
     %p
       %strong Quantité:
-      = "#{@restaurant.ratings.where(:restaurant_id => @restaurant.id).first.quantity} / 10"
+      = "#{@averages[:quantity]} / 10"
 
   .span2
     %p
       %strong Attente:
-      = "#{@restaurant.ratings.where(:restaurant_id => @restaurant.id).first.waiting} / 10"
+      = "#{@averages[:wait]} / 10"
 
 %br
 
@@ -88,16 +86,24 @@
         %td
           = @restaurant.intervals.where(:day => day).first.interval_type[inter].blank? ? '<span class="red">Fermé</span>'.html_safe : '<span class="green">Ouvert</span>'.html_safe
 
-
+%br
+%br
 
 .btn.btn-inverse
   = link_to restaurants_path, :style => "color:white!important;" do
     %i.icon-arrow-left.icon-white
     Back
-.btn.btn-inverse
-  = link_to edit_restaurant_path(@restaurant), :style => "color:white!important;" do
-    %i.icon-pencil.icon-white
-    Edit
+.pull-right
+  - if(user_signed_in? && (current_user.has_role? :admin))
+    .btn.btn-inverse
+      = link_to edit_restaurant_path(@restaurant), :style => "color:white!important;" do
+        %i.icon-pencil.icon-white
+        Edit
+  - if current_user.ratings.where(:restaurant_id => @restaurant.id).blank?
+    .btn.btn-info
+      = link_to new_restaurant_rating_path(@restaurant), :style => "color:white!important;" do
+        %i.icon-star
+        New Mark
 %br
 %br
 %br

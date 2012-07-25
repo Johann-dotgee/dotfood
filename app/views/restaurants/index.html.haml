@@ -17,14 +17,10 @@
 
   - @restaurants.each do |restaurant|
     - name = current_user.first_name+" "+current_user.last_name.upcase
-    - average = 0
-    - restaurant.ratings.each do |mark|
-      - average += (mark.quality_food + mark.quality_service + mark.ambience + mark.quantity) / 4
-    - average = average/(restaurant.ratings.size)
     %tr
       %td= link_to restaurant.name, restaurant
       %td #{restaurant.budget_min}€ - #{restaurant.budget_max}€
-      %td= average
+      %td= restaurant.average
       %td
         = restaurant.intervals.where(:day => Time.now.strftime('%A')).first.closed ? t(:no) : t(:yes)
       %td

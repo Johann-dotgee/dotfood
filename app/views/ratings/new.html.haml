@@ -1,0 +1,2 @@
+- if current_user.ratings.where(:restaurant_id => @restaurant.id).blank?
+  = render 'form'
