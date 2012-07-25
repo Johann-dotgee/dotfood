@@ -13,8 +13,9 @@
     %th #Votes négatifs
     %th #Total votes
 
-
+  - i = 0
   - @restaurants.each do |restaurant|
+    - taille = ["20px", "18px", "16px", "14px"]
     -if restaurant.votes.count > 0 && restaurant.votes.last.updated_at == Date.today
       - name = current_user.first_name+" "+current_user.last_name.upcase
       %tr
@@ -31,13 +32,14 @@
             %i.icon-thumbs-down{:style => "font-size: 24px;"}
         %td
           - user = restaurant.votes.map { |vote| vote.voter.first_name if (vote.updated_at == Date.today && vote.vote_flag == true) }.compact.join(', ')
-          %span.badge.badge-success{:rel => "popover", "data-content" => "#{user}", "data-original-title" => "Votants"}=restaurant.votes.count(:all, :conditions => {:updated_at => Time.now.midnight..(Time.now.midnight + 1.day), :vote_flag => true})
+          %span.badge.badge-success{:style => "font-size: #{taille[i] || '12px'}", :rel => "popover", "data-content" => "#{user}", "data-original-title" => "Votants"}=restaurant.votes.count(:all, :conditions => {:updated_at => Time.now.midnight..(Time.now.midnight + 1.day), :vote_flag => true})
         %td
           - user = restaurant.votes.map { |vote| vote.voter.first_name if (vote.updated_at == Date.today && vote.vote_flag == false) }.compact.join(', ')
           %span.badge.badge-important{:rel => "popover", "data-content" => "#{user}", "data-original-title" => "Votants"}=restaurant.votes.count(:all, :conditions => {:updated_at => Time.now.midnight..(Time.now.midnight + 1.day), :vote_flag => false})
         %td
           -user = restaurant.votes.map { |vote| vote.voter.first_name if vote.updated_at == Date.today }.compact.join(', ')
           %span.badge.badge-info{:rel => "popover", "data-content" => "#{user}", "data-original-title" => "Votants"}=restaurant.votes.count(:all, :conditions => {:updated_at => Time.now.midnight..(Time.now.midnight + 1.day)})
+    - i += 1
 
 %br
 %br
