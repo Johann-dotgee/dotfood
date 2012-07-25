@@ -20,7 +20,7 @@
     %tr
       %td= link_to restaurant.name, restaurant
       %td #{restaurant.budget_min}€ - #{restaurant.budget_max}€
-      %td= restaurant.average
+      %td= restaurant.ratings.blank? ? "Non noté" : restaurant.average
       %td
         = restaurant.intervals.where(:day => Time.now.strftime('%A')).first.closed ? t(:no) : t(:yes)
       %td

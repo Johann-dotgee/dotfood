@@ -36,31 +36,46 @@
       = "#{@restaurant.time_to_go} minutes"
 
 .row
-  .span2
-    %p
-      %strong Service:
-      = "#{@averages[:service]} / 10"
+  - if @restaurant.ratings.blank?
+    - marks = ["service", "food", "ambience", "quantity", "wait"]
+    - for i in 0..marks.size
+      .span2
+        %p
+          %strong= "#{marks[i].to_s.capitalize}: "
+          = "<span class='red'>Non noté</span>".html_safe
+  - else
+    - @averages.each do |note|
+      .span2
+        %p
+          %strong= "#{note.first.to_s.capitalize}: "
+          = "#{note.last.to_s} / 10"
 
-  .span2
-    %p
-      %strong Nourriture:
-      = "#{@averages[:food]} / 10"
+
+  / .span2
+  /   %p
+  /     %strong Service:
+  /     = @restaurant.ratings.blank? ? "<span class='red'>Non noté</span>".html_safe : "#{@averages[:service]} / 10"
+
+  / .span2
+  /   %p
+  /     %strong Nourriture:
+  /     = @restaurant.ratings.blank? ? "<span class='red'>Non noté</span>".html_safe : "#{@averages[:food]} / 10"
 
 
-  .span2
-    %p
-      %strong Ambiance:
-      = "#{@averages[:ambience]} / 10"
+  / .span2
+  /   %p
+  /     %strong Ambiance:
+  /     = @restaurant.ratings.blank? ? "<span class='red'>Non noté</span>".html_safe : "#{@averages[:ambience]} / 10"
 
-  .span2
-    %p
-      %strong Quantité:
-      = "#{@averages[:quantity]} / 10"
+  / .span2
+  /   %p
+  /     %strong Quantité:
+  /     = @restaurant.ratings.blank? ? "<span class='red'>Non noté</span>".html_safe : "#{@averages[:quantity]} / 10"
 
-  .span2
-    %p
-      %strong Attente:
-      = "#{@averages[:wait]} / 10"
+  / .span2
+  /   %p
+  /     %strong Attente:
+  /     = @restaurant.ratings.blank? ? "<span class='red'>Non noté</span>".html_safe : "#{@averages[:wait]} / 10"
 
 %br
 

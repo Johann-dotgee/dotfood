@@ -5,9 +5,11 @@ class RestaurantsController < ApplicationController
 
   def index
     @restaurants = Restaurant.find(:all)
-    @restaurants.each do |restaurant| 
-      averages = get_averages restaurant
-      restaurant["average"] = ((averages[:service] + averages[:food] + averages[:ambience] + averages[:quantity] + averages[:wait]) / 5).to_s
+    @restaurants.each do |restaurant|
+      unless restaurant.ratings.blank?
+        averages = get_averages restaurant
+        restaurant["average"] = ((averages[:service] + averages[:food] + averages[:ambience] + averages[:quantity] + averages[:wait]) / 5).to_s
+      end
     end
     @alone = get_alones
     respond_with(@restaurants)
@@ -39,7 +41,9 @@ class RestaurantsController < ApplicationController
   def show
     @restaurant = Restaurant.find(params[:id])
     @distance = @restaurant.distance_to("2 Cité d'Aleth, Rennes 35000, France")
-    @averages = get_averages(@restaurant)
+    unless @restaurant.ratings.blank?
+      @averages = get_averages(@restaurant)
+    end
     respond_with(@restaurant)
   end
 
