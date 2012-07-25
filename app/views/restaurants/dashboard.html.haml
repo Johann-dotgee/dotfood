@@ -18,7 +18,7 @@
     -if restaurant.votes.count > 0 && restaurant.votes.last.updated_at == Date.today
       - name = current_user.first_name+" "+current_user.last_name.upcase
       %tr
-        %td= link_to restaurant.name, restaurant
+        %td= link_to restaurant.name, restaurant, :rel => "popover", "data-content" => "<img src='#{restaurant.picture}' /><br /><strong>Type</strong>: #{restaurant.restaurant_type} - <strong>Spécialité</strong>: #{restaurant.speciality}<br /><br />#{restaurant.description}".html_safe, "data-original-title" => "#{restaurant.name}"
         %td
           - if alone[name].blank?
             = link_to '<i class="icon-thumbs-up" style="font-size: 24px;"></i>'.html_safe, upvote_restaurant_path(restaurant)

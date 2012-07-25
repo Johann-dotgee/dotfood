@@ -18,7 +18,7 @@
   - @restaurants.each do |restaurant|
     - name = current_user.first_name+" "+current_user.last_name.upcase
     %tr
-      %td= link_to restaurant.name, restaurant
+      %td= link_to restaurant.name, restaurant, :rel => "popover", "data-content" => "<img src='#{restaurant.picture}' /><br /><strong>Type</strong>: #{restaurant.restaurant_type} - <strong>Spécialité</strong>: #{restaurant.speciality}<br /><br />#{restaurant.description}".html_safe, "data-original-title" => "#{restaurant.name}"
       %td #{restaurant.budget_min}€ - #{restaurant.budget_max}€
       %td= restaurant.ratings.blank? ? "Non noté" : restaurant.average
       %td
