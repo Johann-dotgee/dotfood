@@ -16,21 +16,78 @@
       %th= t(:actions)
 
   - @restaurants.each do |restaurant|
+    - type = ["up", "down"]
+    - for i in 0..type.size-1 do
+      .modal.hide.fade{:id => "modal-#{type[i]}vote-#{restaurant.id}"}
+        .modal-header
+          %button.close{:type => "button", "data-dismiss" => "modal"}
+          %h3 
+            Vote 
+            = type[i] == "up" ? "positif" : "négatif"
+        .modal-body
+          %ul.nav.nav-tabs
+            %li= link_to "Aujourd'hui", vote2_restaurant_path(restaurant, type: type[i], number: 0), method: "post"
+            %li= link_to "Demain", vote2_restaurant_path(restaurant, type: type[i], number: 1), method: "post"
+            %li.totab{"data-toggle" => "tab"}= link_to "Un autre jour", "#other-#{restaurant.id}"
+          .tab-content
+            .tab-pane
+              %p Voulez-vous voter pour aujourd'hui, demain, ou pour un autre jour ?
+            .tab-pane{:id => "other-#{restaurant.id}"}
+              %p
+                Voter pour dans
+                %input.span1{:id => restaurant.id, :class => type[i]}
+                Jours
+                = link_to " go !", "#{restaurant.id}/#{type[i]}vote/0"
+              %br
+              %br
+              .red Attention, si vous changez d'avis, vous ne pourrez modifier votre vote qu'à partir du jour pour lequel vous avez voté.
+        .modal-footer
+          .btn.btn-danger{"data-dismiss" => "modal"} Close
+
+
+
+
+
+    .modal.hide.fade{:id => "modal-downvote-#{restaurant.id}"}
+      .modal-header
+        %button.close{:type => "button", "data-dismiss" => "modal"}
+        %h3 Vote négatif
+      .modal-body
+        %ul.nav.nav-tabs
+          %li= link_to "Aujourd'hui", "/restaurants/#{restaurant.id}/downvote/0"
+          %li= link_to "Demain", "/restaurants/#{restaurant.id}/downvote/1"
+          %li{"data-toggle" => "tab"}= link_to "Un autre jour", "#other-#{restaurant.id}", :class => 'totab'
+        .tab-content
+          .tab-pane.active
+            %p Voulez-vous voter pour aujourd'hui, demain, ou pour un autre jour ?
+          .tab-pane{:id => "other-#{restaurant.id}"}
+            %p
+              Voter pour dans
+              %input.span1.down{:id => restaurant.id}
+              Jours
+              = link_to " go !", "/restaurants/#{restaurant.id}/downvote/0"
+            %br
+            %br
+            .red Attention, si vous changez d'avis, vous ne pourrez modifier votre vote qu'à partir du jour pour lequel vous avez voté.
+      .modal-footer
+        .btn.btn-danger{"data-dismiss" => "modal"} Close
+
+
     - name = current_user.first_name+" "+current_user.last_name.upcase
     %tr
       %td= link_to restaurant.name, restaurant, :rel => "popover", "data-content" => "<img src='#{restaurant.picture}' /><br /><strong>Type</strong>: #{restaurant.restaurant_type} - <strong>Spécialité</strong>: #{restaurant.speciality}<br /><br />#{restaurant.description}".html_safe, "data-original-title" => "#{restaurant.name}"
       %td #{restaurant.budget_min}€ - #{restaurant.budget_max}€
-      %td= restaurant.ratings.blank? ? "Non noté" : restaurant.average
+      %td= restaurant.reputation_value_for(:global_rating)
       %td
         = restaurant.intervals.where(:day => Time.now.strftime('%A')).first.closed ? t(:no) : t(:yes)
       %td
         - if alone[name].blank?
-          = link_to '<i class="icon-thumbs-up" style="font-size: 24px;"></i>'.html_safe, upvote_restaurant_path(restaurant)
+          = link_to '<i class="icon-thumbs-up" style="font-size: 24px;"></i>'.html_safe, "#modal-upvote-#{restaurant.id}", "data-toggle" => "modal"
         - else
           %i.icon-thumbs-up{:style => "font-size: 24px;"}
       %td
         - if alone[name].blank?
-          = link_to '<i class="icon-thumbs-down" style="font-size: 24px;"></i>'.html_safe, downvote_restaurant_path(restaurant)
+          = link_to '<i class="icon-thumbs-down" style="font-size: 24px;"></i>'.html_safe, "#modal-downvote-#{restaurant.id}", "data-toggle" => "modal"
         - else
           %i.icon-thumbs-down{:style => "font-size: 24px;"}
       

@@ -1,0 +1,13 @@
+= simple_form_for([@group, @event]) do |f|
+  = f.error_notification
+
+  .form.form-horizontal
+    .form-inputs
+      = f.input :name
+      = f.input :start_at
+      = f.input :end_at
+      
+      
+
+    .form-actions
+      = f.button :submit

@@ -1,0 +1,41 @@
+%p#notice= notice
+
+.page-header
+  %h2
+    Événement 
+    = @event.name
+    .pull-right
+      .btn.btn-info=link_to '<i class="icon-pencil"></i> Edit'.html_safe, edit_group_event_path(@group, @event.first), :style => "color:white!important;"
+
+- @event.first.attributes.first(4).each do |key, value|
+  - unless ["id"].include?(key)
+    .row
+      .span2
+        %p
+          = key.camelize
+          \:
+      .span3
+        %p= value
+
+.row
+  .span2
+    %p Users:
+  .span3
+    %p
+      - @group.users.each_with_index do |user, i|
+        = "- #{user.first_name} #{user.last_name.upcase} <br />".html_safe
+
+.btn.btn-success
+  = link_to new_group_event_sondage_path(@group, @event.first), :style => "color:white!important;" do
+    %i.icon-plus-sign
+    Create Sondage
+
+.btn.btn-success
+  = link_to group_event_sondage_path(@group, @event.first), :style => "color:white!important;" do
+    %i.icon-eye-open
+    View Sondages
+
+.btn.btn-inverse
+  = link_to groups_path, :style => "color:white!important;" do
+    %i.icon-arrow-left.icon-white
+    Back

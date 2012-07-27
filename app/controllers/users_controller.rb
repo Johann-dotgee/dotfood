@@ -18,6 +18,9 @@ class UsersController < ApplicationController
     end
   end
 
+  def groupes
+  end
+
   # PUT /users/1
   # PUT /users/1.xml
   def update

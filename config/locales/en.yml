@@ -10,7 +10,7 @@ en:
   picture_restaurant_label: "Picture"
   name_restaurant_label: "Name"
   speciality_restaurant_label: "Speciality"
-  type_restaurant_label: "Type"
+  restaurant_type_restaurant_label: "Type"
   address_restaurant_label: "Address"
   budget_min_restaurant_label: "Minimum budget"
   budget_max_restaurant_label: "Maximum budget"

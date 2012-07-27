@@ -4,7 +4,8 @@ class RestaurantsController < ApplicationController
   before_filter :parse_interval, :only => :create
 
   def index
-    @restaurants = Restaurant.find(:all)
+    @restaurants = Restaurant.all
+    @restaurants = @restaurants.sort{|a,b| a.rank_for(:global_rating) <=> b.rank_for(:global_rating)}
     @restaurants.each do |restaurant|
       unless restaurant.ratings.blank?
         averages = get_averages restaurant
@@ -18,8 +19,25 @@ class RestaurantsController < ApplicationController
   # GET /restaurants
   # GET /restaurants.xml
   def dashboard
-    @restaurants = Restaurant.find :all, :include => [:votes], :conditions => {"votes.created_at" => Date.today}
-    @restaurants = @restaurants.sort{|a,b| b.diff <=> a.diff}
+    # @restaurants = Restaurant.all
+    # @restaurants = Restaurant.find_with_reputation(:votes, :all, :conditions => ["rs_reputations.updated_at = ?", Date.today])
+    @restaurants = Restaurant.all
+    @restaurants.each do |restaurant|
+      restaurant["votes"] = restaurant.evaluations
+      restaurant["plus"] = restaurant.evaluations.where(target_type: restaurant.class, target_id: restaurant.id, reputation_name: 'votes', value: 1, created_at: Date.today)
+      restaurant["moins"] = restaurant.evaluations.where(target_type: restaurant.class, target_id: restaurant.id, reputation_name: 'votes', value: -1, created_at: Date.today)
+      # restaurant["votes"] = restaurant.evaluations.today(restaurant)
+      # restaurant["plus"] = restaurant.evaluations.plus_today(restaurant)
+      # restaurant["moins"] = restaurant.evaluations.moins_today(restaurant)
+
+      ["votes", "plus", "moins"].each do |value|
+        restaurant[value].each do |v|
+          v["voter"] = User.where(id: v.source_id)
+        end
+      end
+      
+    end
+    @restaurants = @restaurants.sort{|a,b| a.rank_for(:votes, :today) <=> b.rank_for(:votes, :today)}
     @alone = get_alones
     respond_with(@restaurants)
   end
@@ -34,6 +52,20 @@ class RestaurantsController < ApplicationController
     @restaurant = Restaurant.find(params[:id])
     vote 'bad', params[:id]
     redirect_to dashboard_restaurants_path
+  end
+
+
+  def rate
+    @restaurant = Restaurant.find(params[:id])
+    @restaurant.add_or_update_evaluation(params[:mark], params[:value], current_user, :just_today)
+    redirect_to new_restaurant_rating_path(@restaurant), notice: "Thank you for rating"
+  end
+
+  def vote2
+    @restaurant = Restaurant.find(params[:id])
+    value = params[:type] == "up" ? 1 : -1
+    @restaurant.add_or_update_evaluation(:votes, value, current_user, params[:scope].to_sym)
+    redirect_to :back, notice: "Thank you for voting"
   end
 
   # GET /restaurants/1
@@ -157,11 +189,10 @@ class RestaurantsController < ApplicationController
         unless type_flag == type
           @restaurant.vote :voter => current_user, :vote => type
           flash[:notice] = "Votre vote a bien été modifié."
-      	else
-      	  type_vote = type == "like" ? "pour" : "contre"
-      	  flash[:error] = "Vous avez déjà voté #{type_vote} ce restaurant."
-      	end
+        else
+          type_vote = type == "like" ? "pour" : "contre"
+          flash[:error] = "Vous avez déjà voté #{type_vote} ce restaurant."
+        end
       end
     end
-
 end

@@ -1,23 +1,27 @@
-%h2= @user.first_name
+.page-header
+  %h2
+    = @user.first_name
+    .pull-right= link_to '<i class="icon-pencil" style="font-size: 24px;"></i>'.html_safe, edit_user_path(current_user)
 %br
-.row
-  .span1
-    %p Prénom:
-  .span3
-    %p=@user.first_name
+
+- @user.attributes.first(5).each do |key, value|
+  - unless key == "id"
+    .row
+      .span2
+        %p
+          = key.camelize
+          \:
+      .span3
+        %p= (key == 'email') ? mail_to(value, value) : value
 
 .row
-  .span1
-    %p Email:
-  .span3
-    %p=@user.email
-
-.row
-  .span1
+  .span2
     %p Rôle(s):
   .span3
     %p=@user.roles_name.compact.join(', ')
-- rule = IceCube::Rule.daily.hour_of_day(11)
-- schedule = IceCube::Schedule.new(Time.now-34.minute)
-- schedule.add_recurrence_rule rule
-.hero-unit= schedule.occurs_at? Time.now ?
+
+.row
+  .span2
+    %p Groupe(s):
+  .span3
+    %p=(@user.groups.map{|group| link_to group.name, group}.compact.join(', ')).html_safe

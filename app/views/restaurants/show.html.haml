@@ -36,19 +36,13 @@
       = "#{@restaurant.time_to_go} minutes"
 
 .row
-  - if @restaurant.ratings.blank?
-    - marks = ["service", "food", "ambience", "quantity", "wait"]
-    - for i in 0..marks.size
-      .span2
-        %p
-          %strong= "#{marks[i].to_s.capitalize}: "
-          = "<span class='red'>Non noté</span>".html_safe
-  - else
-    - @averages.each do |note|
-      .span2
-        %p
-          %strong= "#{note.first.to_s.capitalize}: "
-          = "#{note.last.to_s} / 10"
+  - marks = ["quality_food", "quality_service", "quantity", "ambience", "waiting", "global_rating"]
+  - marks.each do |note|
+    .span2
+      %p
+        %strong= "#{note.to_s.camelize}: "
+        = @restaurant.reputation_value_for(:"#{note}")
+        \/10
 
 %br
 
@@ -83,6 +77,12 @@
 - @restaurant.comments.each do |comment|
   .row
     .span12
+      - if comment.reputation_value_for(:likes).to_i > 0
+        %span.badge.badge-success= comment.reputation_value_for(:likes).to_i
+      - if comment.reputation_value_for(:likes).to_i == 0
+        %span.badge.badge-info= comment.reputation_value_for(:likes).to_i
+      - if comment.reputation_value_for(:likes).to_i < 0
+        %span.badge.badge-important= comment.reputation_value_for(:likes).to_i
       .pull-right
         %p 
           %strong
@@ -93,12 +93,16 @@
         %strong= comment.title
       %br
       %p{:style => "text-align: center;"}= comment.comment.gsub("\n\r","<br>").gsub("\r", "").gsub("\n", "<br />").html_safe
-
+      %br
+      .pull-right
+        = link_to '<i class="icon-plus" style="color:green;font-size:16px;text-decoration:none"></i>'.html_safe, like_restaurant_comment_path(comment, type: "like"), method: "post"
+        = link_to '<i class="icon-minus" style="color:red;font-size:16px;text-decoration:none"></i>'.html_safe, like_restaurant_comment_path(comment, type: "dislike"), method: "post"
   %hr
 
 .page-header
-  %h3 Leave a comment
-
+  %h3 
+    %i.icon-comment
+    Leave a comment
 
 = simple_form_for([@restaurant, @comment]) do |f|
   = f.error_notification
@@ -126,11 +130,10 @@
       = link_to edit_restaurant_path(@restaurant), :style => "color:white!important;" do
         %i.icon-pencil.icon-white
         Edit
-  - if current_user.ratings.where(:restaurant_id => @restaurant.id).blank?
-    .btn.btn-info
-      = link_to new_restaurant_rating_path(@restaurant), :style => "color:white!important;" do
-        %i.icon-star
-        New Mark
+  .btn.btn-info
+    = link_to new_restaurant_rating_path(@restaurant), :style => "color:white!important;" do
+      %i.icon-star
+      New Mark
 %br
 %br
 %br

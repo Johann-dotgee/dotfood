@@ -44,4 +44,11 @@ class CommentsController < ApplicationController
     @comment.destroy
     respond_with(@comment)
   end
+
+  def like
+    value = params[:type] == "like" ? 1 : -1
+    @comment = Comment.find(params[:restaurant_id])
+    @comment.add_or_update_evaluation(:likes, value, current_user)
+    redirect_to :back, notice: "Thank you for liking"
+  end
 end

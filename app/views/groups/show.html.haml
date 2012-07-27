@@ -1,0 +1,31 @@
+%p#notice= notice
+
+.page-header
+  %h2
+    Groupe 
+    = @group.name
+    .pull-right
+      .btn.btn-info=link_to '<i class="icon-pencil"></i> Edit'.html_safe, edit_group_path(@group), :style => "color:white!important;"
+
+- @group.attributes.first(5).each do |key, value|
+  - unless ["id", "user_id"].include?(key)
+    .row
+      .span2
+        %p
+          = key.camelize
+          \:
+      .span3
+        %p= value
+
+.row
+  .span2
+    %p Users:
+  .span3
+    %p
+      - @group.users.each_with_index do |user, i|
+        = "- #{user.first_name} #{user.last_name.upcase} <br />".html_safe
+
+.btn.btn-inverse
+  = link_to groups_path, :style => "color:white!important;" do
+    %i.icon-arrow-left.icon-white
+    Back

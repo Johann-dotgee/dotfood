@@ -1,9 +1,11 @@
 = simple_form_for(@user) do |f|
   = f.error_notification
 
-  .form-inputs
-    = f.input :first_name
-    = f.input :email
+  .form.form-horizontal
+    .form-inputs
+      - @user.attributes.first(5).each do |key, value|
+        - unless key == "id"
+          = f.input :"#{key}"
 
-  .form-actions
-    = f.button :submit
+    .form-actions
+      = f.button :submit, :class => 'btn-primary'

@@ -1,0 +1,13 @@
+= simple_form_for(@group) do |f|
+  = f.error_notification
+
+  .form.form-horizontal
+
+    .form-inputs
+      - @group.attributes.each do |key, value|
+        - unless ["id", "user_id"].include?(key)
+          = f.input :"#{key}"
+      = f.association :users, :label_method => lambda { |user| "#{user.first_name}" }, :as => :check_boxes
+
+    .form-actions
+      = f.button :submit

@@ -9,34 +9,16 @@
     %br
     .row
       .span6
-        .control-group
-          .control-label= f.label t(:picture_restaurant_label)
-          .controls= f.input_field :picture
-        .control-group
-          .control-label= f.label t(:name_restaurant_label)
-          .controls= f.input_field :name
-        .control-group
-          .control-label= f.label t(:speciality_restaurant_label)
-          .controls= f.input_field :speciality
-        .control-group
-          .control-label= f.label t(:type_restaurant_label)
-          .controls= f.input_field :restaurant_type
-        .control-group
-          .control-label= f.label t(:address_restaurant_label)
-          .controls= f.input_field :address
-        .control-group
-          .control-label= f.label t(:budget_min_restaurant_label)
-          .controls= f.input_field :budget_min
-        .control-group
-          .control-label= f.label t(:budget_max_restaurant_label)
-          .controls= f.input_field :budget_max
-        .control-group
-          .control-label= f.label t(:time_to_go_restaurant_label)
-          .controls= f.input_field :time_to_go
+        - @restaurant.attributes.each do |key, value|
+          - unless ["id", "longitude", "latitude", "description"].include?(key)
+            .control-group
+              .control-label= f.label t(:"#{key}_restaurant_label")
+              .controls= f.input_field :"#{key}"
+
       .span6
         .control-group
           .control-label= f.label t(:description_restaurant_label)
-          .controls= f.input_field :description, :as => :text
+          .controls= f.input_field :description, :as => :text, :rows => 10, :class => "span4"
 
 
       - if @restaurant.new_record?
@@ -56,3 +38,7 @@
 
   .form-actions
     = f.button :submit, :class => "btn-primary"
+
+
+  %br
+  %br

@@ -13,12 +13,7 @@ class RatingsController < ApplicationController
   def new
     @rating = Rating.new
     @restaurant = Restaurant.find(params[:restaurant_id])
-    if current_user.ratings.where(:restaurant_id => @restaurant.id).blank?
-      respond_with(@rating)
-    else
-      flash[:error] = "Vous avez déjà noté ce restaurant"
-      redirect_to restaurant_path(@restaurant)
-    end
+    respond_with(@rating)
   end
 
   def edit

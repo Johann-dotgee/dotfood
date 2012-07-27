@@ -1,0 +1,17 @@
+%h1 Listing events
+
+%table.table.table-striped
+  %tr
+    %th Name
+    %th #Actions
+  - @events.each do |event|
+    %tr
+      %td= link_to event.name, [@group, event]
+      %td
+        = link_to '<i class="icon-eye-open" style="font-size: 24px;"></i>'.html_safe, [@group, event]
+        = link_to '<i class="icon-pencil" style="font-size: 24px;"></i>'.html_safe, edit_group_event_path(@group, event)
+        = link_to '<i class="icon-remove" style="font-size: 24px;"></i>'.html_safe, [@group, event], :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Event', new_group_event_path(@group)

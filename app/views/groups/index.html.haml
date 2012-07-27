@@ -1,0 +1,18 @@
+%h1 Listing groups
+
+%table.table.table-striped
+  %tr
+    %th Group name
+    %th= "##{t(:actions)}"
+
+  - @groups.each do |group|
+    %tr
+      %td= link_to group.name, group
+      %td
+        = link_to '<i class="icon-eye-open" style="font-size: 24px;"></i>'.html_safe, group
+        = link_to '<i class="icon-pencil" style="font-size: 24px;"></i>'.html_safe, edit_group_path(group)
+        = link_to '<i class="icon-remove" style="font-size: 24px;"></i>'.html_safe, group, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Group', new_group_path

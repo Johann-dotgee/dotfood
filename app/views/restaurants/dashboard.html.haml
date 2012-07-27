@@ -9,37 +9,59 @@
       %i.icon-plus
     %th
       %i.icon-minus
-    %th #Votes positifs
-    %th #Votes négatifs
-    %th #Total votes
+    %th #Note votes
 
-  - i = 0
-  - @restaurants.each do |restaurant|
+  - @restaurants.each_with_index do |restaurant, j|
+    - type = ["up", "down"]
     - taille = ["20px", "18px", "16px", "14px"]
-    -if restaurant.votes.count > 0 && restaurant.votes.last.updated_at == Date.today
-      - name = current_user.first_name+" "+current_user.last_name.upcase
-      %tr
-        %td= link_to restaurant.name, restaurant, :rel => "popover", "data-content" => "<img src='#{restaurant.picture}' /><br /><strong>Type</strong>: #{restaurant.restaurant_type} - <strong>Spécialité</strong>: #{restaurant.speciality}<br /><br />#{restaurant.description}".html_safe, "data-original-title" => "#{restaurant.name}"
-        %td
-          - if alone[name].blank?
-            = link_to '<i class="icon-thumbs-up" style="font-size: 24px;"></i>'.html_safe, upvote_restaurant_path(restaurant)
-          - else
-            %i.icon-thumbs-up{:style => "font-size: 24px;"}
-        %td
-          - if alone[name].blank?
-            = link_to '<i class="icon-thumbs-down" style="font-size: 24px;"></i>'.html_safe, downvote_restaurant_path(restaurant)
-          - else
-            %i.icon-thumbs-down{:style => "font-size: 24px;"}
-        %td
-          - user = restaurant.votes.map { |vote| vote.voter.first_name if (vote.updated_at == Date.today && vote.vote_flag == true) }.compact.join(', ')
-          %span.badge.badge-success{:style => "font-size: #{taille[i] || '12px'}", :rel => "popover", "data-content" => "#{user}", "data-original-title" => "Votants"}=restaurant.votes.count(:all, :conditions => {:updated_at => Time.now.midnight..(Time.now.midnight + 1.day), :vote_flag => true})
-        %td
-          - user = restaurant.votes.map { |vote| vote.voter.first_name if (vote.updated_at == Date.today && vote.vote_flag == false) }.compact.join(', ')
-          %span.badge.badge-important{:rel => "popover", "data-content" => "#{user}", "data-original-title" => "Votants"}=restaurant.votes.count(:all, :conditions => {:updated_at => Time.now.midnight..(Time.now.midnight + 1.day), :vote_flag => false})
-        %td
-          -user = restaurant.votes.map { |vote| vote.voter.first_name if vote.updated_at == Date.today }.compact.join(', ')
-          %span.badge.badge-info{:rel => "popover", "data-content" => "#{user}", "data-original-title" => "Votants"}=restaurant.votes.count(:all, :conditions => {:updated_at => Time.now.midnight..(Time.now.midnight + 1.day)})
-    - i += 1
+    - for i in 0..type.size-1 do
+      .modal.hide.fade{:id => "modal-#{type[i]}vote-#{restaurant.id}"}
+        .modal-header
+          %button.close{:type => "button", "data-dismiss" => "modal"}
+          %h3 
+            Vote 
+            = type[i] == "up" ? "positif" : "négatif"
+        .modal-body
+          %ul.nav.nav-tabs
+            %li= link_to "Aujourd'hui", vote2_restaurant_path(restaurant, type: type[i], number: 0, scope: :today), method: "post"
+            %li= link_to "Demain", vote2_restaurant_path(restaurant, type: type[i], number: 1, scope: :tomorow), method: "post"
+            %li.totab{"data-toggle" => "tab"}= link_to "Un autre jour", "#other-#{restaurant.id}"
+          .tab-content
+            .tab-pane
+              %p Voulez-vous voter pour aujourd'hui, demain, ou pour un autre jour ?
+            .tab-pane{:id => "other-#{restaurant.id}"}
+              %p
+                Voter pour dans
+                %input.span1{:id => restaurant.id, :class => type[i]}
+                Jours
+                = link_to " go !", "#{restaurant.id}/#{type[i]}vote/0"
+              %br
+              %br
+              .red Attention, si vous changez d'avis, vous ne pourrez modifier votre vote qu'à partir du jour pour lequel vous avez voté.
+        .modal-footer
+          .btn.btn-danger{"data-dismiss" => "modal"} Close
+
+
+    - name = current_user.first_name+" "+current_user.last_name.upcase
+    %tr
+      %td= link_to restaurant.name, restaurant, :rel => "popover", "data-content" => "<img src='#{restaurant.picture}' /><br /><strong>Type</strong>: #{restaurant.restaurant_type} - <strong>Spécialité</strong>: #{restaurant.speciality}<br /><br />#{restaurant.description}".html_safe, "data-original-title" => "#{restaurant.name}"
+      %td
+        - if alone[name].blank?
+          = link_to '<i class="icon-thumbs-up" style="font-size: 24px;"></i>'.html_safe, "#modal-upvote-#{restaurant.id}", "data-toggle" => "modal"
+        - else
+          %i.icon-thumbs-up{:style => "font-size: 24px;"}
+      %td
+        - if alone[name].blank?
+          = link_to '<i class="icon-thumbs-down" style="font-size: 24px;"></i>'.html_safe, "#modal-downvote-#{restaurant.id}", "data-toggle" => "modal"
+        - else
+          %i.icon-thumbs-down{:style => "font-size: 24px;"}
+      %td
+        - if restaurant.reputation_value_for(:votes, :today) < 0
+          %span.badge.badge-important{:style => "font-size: #{taille[j] || '12px'}"}= restaurant.votes.count
+        - elsif restaurant.reputation_value_for(:votes, :today) == 0
+          %span.badge.badge-warning{:style => "font-size: #{taille[j] || '12px'}"}= restaurant.votes.count
+        - else
+          %span.badge.badge-success{:style => "font-size: #{taille[j] || '12px'}"}= restaurant.votes.count
 
 %br
 %br
@@ -53,3 +75,9 @@
 %br
 
 = link_to 'Je ne mange pas avec vous', eat_alone_user_path(current_user), :class => "btn btn-info", :style => "color:white!important;"
+
+
+
+
+
+

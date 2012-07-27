@@ -1,2 +1,9 @@
-- if current_user.ratings.where(:restaurant_id => @restaurant.id).blank?
-  = render 'form'
+- ["quality_food", "quality_service", "quantity", "ambience", "waiting"].each do |note|
+  .page-header
+    %h3 
+      Rating #{note.camelize}
+      - if current_user.rated?(@restaurant, note) 
+        %i.icon-ok.green 
+  - for i in 0..10
+    = link_to "#{i} ", rate_restaurant_path(@restaurant, mark: note, value: i), method: "post"
+    = "-" if i < 10

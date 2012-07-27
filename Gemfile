@@ -19,7 +19,7 @@ end
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
-
+  gem 'jquery-ui-rails'
   gem 'uglifier', '>= 1.0.3'
 end
 
@@ -53,3 +53,5 @@ gem "geocoder"
 gem "mail"
 gem "ice_cube"
 gem 'acts_as_commentable'
+gem 'activerecord-reputation-system', :require => 'reputation_system'
+gem 'event-calendar', :require => 'event_calendar'
